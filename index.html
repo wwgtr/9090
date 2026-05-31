@@ -22,9 +22,8 @@
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
             --radius: 18px;
             --font-ar: 'Tajawal', 'Amiri', system-ui, -apple-system, sans-serif;
-            --font-size-ayah: 1.35rem;
+            --font-size-ayah: clamp(1.1rem, 2.5vw, 1.45rem);
             --tab-height: 64px;
-            --player-height: 72px;
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -46,8 +45,8 @@
             font-family: var(--font-ar);
             background: var(--bg-deep);
             color: var(--text-main);
-            min-height: 100vh;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + var(--tab-height) + var(--player-height)) env(safe-area-inset-left);
+            min-height: 100dvh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + var(--tab-height)) env(safe-area-inset-left);
             background-image: 
                 radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.04) 0%, transparent 35%),
                 radial-gradient(circle at 85% 85%, rgba(0, 105, 92, 0.06) 0%, transparent 35%),
@@ -66,13 +65,13 @@
         }
 
         .app-container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            height: 100vh;
+            min-height: 100dvh;
         }
 
         header {
@@ -86,8 +85,8 @@
             margin-bottom: 8px;
         }
         .brand { display: flex; align-items: center; gap: 12px; }
-        .brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; }
-        .brand h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.3px; }
+        .brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; flex-shrink: 0; }
+        .brand h1 { font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 700; letter-spacing: -0.3px; line-height: 1.2; }
         .brand p { font-size: 0.7rem; color: var(--text-sec); margin-top: -2px; }
         .header-actions { display: flex; gap: 10px; }
         .btn-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(120,120,128,0.15); border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
@@ -98,12 +97,16 @@
         .search-box:focus { background: rgba(120,120,128,0.2); box-shadow: 0 0 0 2px var(--primary); }
         .search-box::placeholder { color: var(--text-sec); }
 
-        main { flex: 1; overflow-y: auto; position: relative; scroll-behavior: smooth; }
-        .view { display: none; animation: fadeIn 0.25s ease; padding-bottom: 20px; }
+        main { flex: 1; display: grid; grid-template-columns: 300px 1fr; gap: 16px; overflow: hidden; min-height: 0; }
+        .view { display: none; animation: fadeIn 0.25s ease; padding-bottom: 20px; overflow-y: auto; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .surah-item { padding: 14px 16px; margin-bottom: 8px; border-radius: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); background: rgba(255,255,255,0.06); border: 1px solid transparent; }
+        .sidebar { padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--text-sec); border-radius: 4px; }
+
+        .surah-item { padding: 14px 16px; border-radius: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); background: rgba(255,255,255,0.06); border: 1px solid transparent; min-height: 48px; }
         .surah-item:hover { background: rgba(255,255,255,0.12); border-color: var(--primary); }
         .surah-item:active { transform: scale(0.98); }
         .surah-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
@@ -111,18 +114,18 @@
         .badge { font-size: 0.7rem; padding: 4px 8px; border-radius: 8px; background: rgba(212, 175, 55, 0.15); color: var(--accent); font-weight: 600; }
 
         .reader-header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-        .reader-header h2 { font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+        .reader-header h2 { font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 800; color: var(--accent); margin-bottom: 4px; }
         .reader-header p { font-size: 0.85rem; color: var(--text-sec); }
 
         .ayah-card { padding: 16px; margin-bottom: 12px; background: rgba(255,255,255,0.04); border-radius: 14px; border: 1px solid var(--border); transition: var(--transition); position: relative; animation: fadeUp 0.3s ease backwards; }
         .ayah-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
-        .ayah-card.playing { border-color: var(--accent); background: rgba(212, 175, 55, 0.08); }
-        .ayah-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .ayah-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
         .ayah-num { font-size: 0.8rem; font-weight: 600; color: var(--primary-light); background: rgba(0,105,92,0.12); padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
-        .ayah-actions { display: flex; gap: 8px; }
+        .ayah-actions { display: flex; gap: 8px; flex-wrap: wrap; }
         .ayah-text { font-size: var(--font-size-ayah); line-height: 2.1; text-align: justify; margin-bottom: 8px; font-family: 'Amiri', 'Tajawal', serif; }
-        .ayah-trans { font-size: 0.9rem; color: var(--text-sec); font-style: italic; line-height: 1.5; }
         mark { background: rgba(255, 204, 0, 0.35); padding: 0 4px; border-radius: 4px; }
+        .copy-btn { padding: 6px 12px; border: none; border-radius: 8px; background: rgba(255,255,255,0.1); color: var(--text-sec); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: var(--transition); }
+        .copy-btn:hover { background: var(--accent); color: #000; }
 
         .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: var(--tab-height); display: flex; justify-content: space-around; align-items: center; padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); z-index: 100; border-radius: 20px 20px 0 0; }
         .tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: none; background: transparent; color: var(--text-sec); font-size: 0.75rem; cursor: pointer; transition: var(--transition); height: 100%; }
@@ -131,25 +134,14 @@
         .tab-btn.active span { transform: translateY(-2px) scale(1.1); }
         .tab-btn:active { transform: scale(0.95); }
 
-        .audio-player { position: fixed; bottom: calc(var(--tab-height) + env(safe-area-inset-bottom)); left: 16px; right: 16px; height: var(--player-height); display: flex; align-items: center; gap: 12px; padding: 0 16px; z-index: 90; transform: translateY(120%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
-        .audio-player.visible { transform: translateY(0); }
-        .audio-controls { display: flex; gap: 12px; align-items: center; }
-        .audio-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.15); color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-        .audio-btn:hover { background: var(--primary); color: #fff; }
-        .audio-info { flex: 1; min-width: 0; }
-        .audio-title { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .audio-sub { font-size: 0.7rem; color: var(--text-sec); }
-        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden; cursor: pointer; }
-        .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s linear; }
-
         .settings-grid { display: grid; gap: 12px; }
-        .setting-item { padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+        .setting-item { padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .setting-label { font-size: 0.95rem; font-weight: 500; }
         .toggle { position: relative; width: 48px; height: 28px; background: rgba(120,120,128,0.3); border-radius: 14px; cursor: pointer; transition: var(--transition); }
         .toggle::after { content: ''; position: absolute; top: 3px; right: 3px; width: 22px; height: 22px; background: #fff; border-radius: 50%; transition: var(--transition); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .toggle.active { background: var(--primary); }
         .toggle.active::after { transform: translateX(-20px); }
-        .slider { -webkit-appearance: none; width: 100%; height: 6px; background: rgba(120,120,128,0.3); border-radius: 3px; outline: none; margin-top: 10px; }
+        .slider { -webkit-appearance: none; width: 100%; max-width: 160px; height: 6px; background: rgba(120,120,128,0.3); border-radius: 3px; outline: none; margin-top: 10px; }
         .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; cursor: pointer; }
 
         .empty-state { text-align: center; padding: 40px 20px; color: var(--text-sec); }
@@ -158,13 +150,29 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-        .toast { position: fixed; bottom: calc(var(--tab-height) + var(--player-height) + 20px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-surface); backdrop-filter: blur(16px); padding: 10px 18px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); z-index: 200; transition: all 0.3s ease; opacity: 0; pointer-events: none; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+        .toast { position: fixed; bottom: calc(var(--tab-height) + 20px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-surface); backdrop-filter: blur(16px); padding: 10px 18px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); z-index: 200; transition: all 0.3s ease; opacity: 0; pointer-events: none; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        @media (max-width: 768px) {
-            .app-container { padding: 12px; }
-            header { padding: 12px 14px; }
-            .ayah-text { font-size: calc(var(--font-size-ayah) - 0.1rem); }
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            main { grid-template-columns: 1fr; grid-template-rows: 45% 55%; }
+            .sidebar { border-radius: var(--radius); }
+            .reader-header h2 { font-size: 1.5rem; }
+        }
+        @media (max-width: 600px) {
+            main { grid-template-rows: auto 1fr; }
+            .sidebar { max-height: 220px; order: 2; }
+            .view#view-reader { order: 1; }
+            .ayah-text { font-size: 1.15rem; line-height: 2; }
+            .ayah-meta { flex-direction: column; align-items: flex-start; }
+            .ayah-actions { width: 100%; justify-content: flex-start; }
+            .copy-btn { flex: 1; justify-content: center; }
+            .setting-item { flex-direction: column; align-items: flex-start; }
+            .slider { max-width: 100%; }
+        }
+        @media (min-width: 1200px) {
+            .app-container { padding: 24px; }
+            .sidebar { padding: 16px; }
         }
     </style>
 </head>
@@ -175,7 +183,7 @@
                 <div class="brand-icon">📖</div>
                 <div>
                     <h1>مصحف أهل البيت</h1>
-                    <p>قراءة تفاعلية | صوتية | ذكية</p>
+                    <p>قراءة تفاعلية | تصميم إسلامي حديث</p>
                 </div>
             </div>
             <div class="header-actions">
@@ -186,11 +194,11 @@
         <input type="text" class="search-box glass" id="search-input" placeholder="ابحث في الآيات، السور، أو الترجمات...">
 
         <main id="main-content">
-            <section id="view-surahs" class="view active">
-                <div id="surah-list" class="loading"><div class="spinner"></div></div>
-            </section>
+            <aside class="sidebar glass" id="surah-list">
+                <div class="loading"><div class="spinner"></div></div>
+            </aside>
 
-            <section id="view-reader" class="view">
+            <section id="view-reader" class="view active">
                 <div id="reader-container" class="empty-state">اختر سورة من القائمة لبدء القراءة</div>
             </section>
 
@@ -205,10 +213,6 @@
                         <input type="range" class="slider" id="font-slider" min="1" max="2.2" step="0.05" value="1.35">
                     </div>
                     <div class="setting-item">
-                        <span class="setting-label">التشغيل التلقائي</span>
-                        <div class="toggle active" id="autoplay-toggle"></div>
-                    </div>
-                    <div class="setting-item">
                         <span class="setting-label">حفظ آخر موضع قراءة</span>
                         <div class="toggle active" id="autosave-toggle"></div>
                     </div>
@@ -220,26 +224,11 @@
         </main>
 
         <nav class="tab-bar glass">
-            <button class="tab-btn active" data-view="surahs"><span>📚</span>السور</button>
             <button class="tab-btn" data-view="reader"><span>📜</span>العارض</button>
+            <button class="tab-btn active" data-view="surahs"><span>📚</span>السور</button>
             <button class="tab-btn" data-view="favorites"><span>⭐</span>المفضلة</button>
             <button class="tab-btn" data-view="settings"><span>⚙️</span>الإعدادات</button>
         </nav>
-
-        <div class="audio-player glass" id="audio-player">
-            <div class="audio-controls">
-                <button class="audio-btn" id="prev-btn">⏮</button>
-                <button class="audio-btn" id="play-btn">▶</button>
-                <button class="audio-btn" id="next-btn">⏭</button>
-            </div>
-            <div class="audio-info">
-                <div class="audio-title" id="audio-title">اختر آية للتشغيل</div>
-                <div class="audio-sub" id="audio-sub">القارئ: مشاري العفاسي</div>
-                <div class="progress-container" id="progress-container">
-                    <div class="progress-bar" id="progress-bar"></div>
-                </div>
-            </div>
-        </div>
 
         <div class="toast" id="toast">✅ تم النسخ بنجاح</div>
     </div>
@@ -250,13 +239,10 @@
             state: {
                 currentView: 'surahs',
                 currentSurahId: null,
-                currentAyahIndex: 0,
                 favorites: [],
-                settings: { theme: 'auto', fontSize: 1.35, autoplay: true, autosave: true },
-                audio: { isPlaying: false, currentSrc: '', duration: 0, currentTime: 0 },
+                settings: { theme: 'auto', fontSize: 1.35, autosave: true },
                 lastRead: { surahId: null, ayahNum: null, scrollY: 0 }
             },
-            audioEl: new Audio(),
             
             init() {
                 this.cacheDOM();
@@ -274,16 +260,7 @@
                     readerContainer: document.getElementById('reader-container'),
                     favoritesList: document.getElementById('favorites-list'),
                     searchInput: document.getElementById('search-input'),
-                    audioPlayer: document.getElementById('audio-player'),
-                    playBtn: document.getElementById('play-btn'),
-                    prevBtn: document.getElementById('prev-btn'),
-                    nextBtn: document.getElementById('next-btn'),
-                    audioTitle: document.getElementById('audio-title'),
-                    audioSub: document.getElementById('audio-sub'),
-                    progressBar: document.getElementById('progress-bar'),
-                    progressContainer: document.getElementById('progress-container'),
                     fontSlider: document.getElementById('font-slider'),
-                    autoplayToggle: document.getElementById('autoplay-toggle'),
                     autosaveToggle: document.getElementById('autosave-toggle'),
                     themeBtn: document.getElementById('theme-btn'),
                     clearCacheBtn: document.getElementById('clear-cache-btn'),
@@ -302,20 +279,9 @@
                     searchTimeout = setTimeout(() => this.renderSearch(e.target.value.trim()), 250);
                 });
 
-                this.dom.playBtn.addEventListener('click', () => this.toggleAudio());
-                this.dom.prevBtn.addEventListener('click', () => this.playPrev());
-                this.dom.nextBtn.addEventListener('click', () => this.playNext());
-                this.dom.progressContainer.addEventListener('click', (e) => this.seekAudio(e));
-                
                 this.dom.fontSlider.addEventListener('input', (e) => {
                     this.state.settings.fontSize = parseFloat(e.target.value);
                     this.applySettings();
-                    this.saveState();
-                });
-
-                this.dom.autoplayToggle.addEventListener('click', () => {
-                    this.state.settings.autoplay = !this.state.settings.autoplay;
-                    this.dom.autoplayToggle.classList.toggle('active', this.state.settings.autoplay);
                     this.saveState();
                 });
 
@@ -330,13 +296,6 @@
                     localStorage.clear();
                     location.reload();
                 });
-
-                this.audioEl.addEventListener('timeupdate', () => this.updateProgress());
-                this.audioEl.addEventListener('ended', () => {
-                    if (this.state.settings.autoplay) this.playNext();
-                    else this.setPlaying(false);
-                });
-                this.audioEl.addEventListener('error', () => this.showToast('⚠️ خطأ في تحميل الصوت'));
 
                 window.addEventListener('scroll', () => {
                     if (this.state.settings.autosave && this.state.currentView === 'reader') {
@@ -376,14 +335,6 @@
                 }
             },
 
-            switchView(view) {
-                this.state.currentView = view;
-                this.dom.tabs.forEach(t => t.classList.toggle('active', t.dataset.view === view));
-                this.dom.views.forEach(v => v.classList.toggle('active', v.id === `view-${view}`));
-                this.haptic(10);
-                if (view === 'favorites') this.renderFavorites();
-            },
-
             renderSurahs() {
                 this.dom.surahList.innerHTML = '';
                 const sorted = [...this.data.surahs].sort((a, b) => (a.id || a.surah_number || 0) - (b.id || b.surah_number || 0));
@@ -396,7 +347,7 @@
                     const item = document.createElement('div');
                     item.className = 'surah-item';
                     item.innerHTML = `<div class="surah-info"><h3>${name}</h3><span>${count} آية | الجزء ${s.juz || '-'}</span></div><span class="badge">${id}</span>`;
-                    item.addEventListener('click', () => { this.haptic(15); this.openSurah(id); });
+                    item.addEventListener('click', () => { this.haptic(10); this.openSurah(id); });
                     frag.appendChild(item);
                 });
                 this.dom.surahList.appendChild(frag);
@@ -424,14 +375,12 @@
                         <div class="ayah-meta">
                             <span class="ayah-num">آية ${a.anum || a.number} ${isFav ? '⭐' : ''}</span>
                             <div class="ayah-actions">
-                                <button class="btn-icon play-ayah-btn" data-idx="${i}" title="تشغيل">▶</button>
-                                <button class="btn-icon copy-btn" data-mode="tashkeel" title="نسخ بالتشكيل">📋</button>
-                                <button class="btn-icon copy-btn" data-mode="plain" title="نسخ بدون تشكيل">📄</button>
+                                <button class="copy-btn" data-mode="tashkeel">📋 نسخ بالتشكيل</button>
+                                <button class="copy-btn" data-mode="plain">📄 نسخ بدون تشكيل</button>
                                 <button class="btn-icon fav-btn" data-id="${id}" data-num="${a.anum || a.number}" title="إضافة للمفضلة">${isFav ? '★' : '☆'}</button>
                             </div>
                         </div>
                         <div class="ayah-text">${a.ar_text || a.text || '...'}</div>
-                        ${a.text ? `<div class="ayah-trans">${a.text}</div>` : ''}
                     `;
                     frag.appendChild(card);
                 });
@@ -445,14 +394,6 @@
             },
 
             bindAyahEvents() {
-                this.dom.readerContainer.querySelectorAll('.play-ayah-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const idx = parseInt(e.currentTarget.dataset.idx);
-                        this.playAyahByIndex(idx);
-                    });
-                });
-
                 this.dom.readerContainer.querySelectorAll('.copy-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -536,7 +477,7 @@
                     this.showToast('تمت الإضافة للمفضلة');
                 }
                 this.saveState();
-                this.haptic(20);
+                this.haptic(15);
             },
 
             copyText(text, mode) {
@@ -547,67 +488,12 @@
                 }).catch(() => this.showToast('فشل النسخ'));
             },
 
-            playAyahByIndex(idx) {
-                const ayahs = this.data.map[this.state.currentSurahId] || [];
-                const ayah = ayahs[idx];
-                if (!ayah) return;
-                
-                this.state.currentAyahIndex = idx;
-                const surah = this.data.surahs.find(s => (s.id || s.surah_number) == this.state.currentSurahId) || {};
-                const surahPadded = String(this.state.currentSurahId).padStart(3, '0');
-                const ayahPadded = String(ayah.anum || ayah.number).padStart(3, '0');
-                
-                this.audioEl.src = `https://everyayah.com/data/Alafasy_128kbps/${surahPadded}${ayahPadded}.mp3`;
-                this.audioEl.play().catch(() => this.showToast('تعذر تشغيل الصوت'));
-                
-                this.dom.audioPlayer.classList.add('visible');
-                this.dom.audioTitle.textContent = `${surah.name} - آية ${ayah.anum || ayah.number}`;
-                this.setPlaying(true);
-                this.highlightCurrentAyah(idx);
-                
-                if (this.state.settings.autosave) {
-                    this.state.lastRead = { surahId: this.state.currentSurahId, ayahNum: ayah.anum || ayah.number, scrollY: window.scrollY };
-                }
-            },
-
-            highlightCurrentAyah(idx) {
-                this.dom.readerContainer.querySelectorAll('.ayah-card').forEach((c, i) => {
-                    c.classList.toggle('playing', i === idx);
-                });
-            },
-
-            toggleAudio() {
-                if (this.audioEl.paused) this.audioEl.play();
-                else this.audioEl.pause();
-            },
-
-            setPlaying(isPlaying) {
-                this.state.audio.isPlaying = isPlaying;
-                this.dom.playBtn.textContent = isPlaying ? '⏸' : '▶';
-                if (!isPlaying) this.audioEl.pause();
-            },
-
-            playPrev() {
-                if (this.state.currentAyahIndex > 0) this.playAyahByIndex(this.state.currentAyahIndex - 1);
-            },
-
-            playNext() {
-                const ayahs = this.data.map[this.state.currentSurahId] || [];
-                if (this.state.currentAyahIndex < ayahs.length - 1) this.playAyahByIndex(this.state.currentAyahIndex + 1);
-            },
-
-            updateProgress() {
-                if (this.audioEl.duration) {
-                    const pct = (this.audioEl.currentTime / this.audioEl.duration) * 100;
-                    this.dom.progressBar.style.width = `${pct}%`;
-                }
-            },
-
-            seekAudio(e) {
-                if (!this.audioEl.duration) return;
-                const rect = this.dom.progressContainer.getBoundingClientRect();
-                const pct = (e.clientX - rect.left) / rect.width;
-                this.audioEl.currentTime = pct * this.audioEl.duration;
+            switchView(view) {
+                this.state.currentView = view;
+                this.dom.tabs.forEach(t => t.classList.toggle('active', t.dataset.view === view));
+                this.dom.views.forEach(v => v.classList.toggle('active', v.id === `view-${view}`));
+                this.haptic(8);
+                if (view === 'favorites') this.renderFavorites();
             },
 
             toggleTheme() {
@@ -622,7 +508,6 @@
             applySettings() {
                 document.documentElement.style.setProperty('--font-size-ayah', `${this.state.settings.fontSize}rem`);
                 this.dom.fontSlider.value = this.state.settings.fontSize;
-                this.dom.autoplayToggle.classList.toggle('active', this.state.settings.autoplay);
                 this.dom.autosaveToggle.classList.toggle('active', this.state.settings.autosave);
                 
                 const savedTheme = this.state.settings.theme;
@@ -633,17 +518,14 @@
             },
 
             saveState() {
-                localStorage.setItem('quran_state', JSON.stringify(this.state));
+                try { localStorage.setItem('quran_state', JSON.stringify(this.state)); } catch(e) {}
             },
 
             loadState() {
-                const saved = localStorage.getItem('quran_state');
-                if (saved) {
-                    try {
-                        const parsed = JSON.parse(saved);
-                        Object.assign(this.state, parsed);
-                    } catch (e) { console.warn('Failed to load state', e); }
-                }
+                try {
+                    const saved = localStorage.getItem('quran_state');
+                    if (saved) Object.assign(this.state, JSON.parse(saved));
+                } catch(e) {}
             },
 
             showToast(msg) {
