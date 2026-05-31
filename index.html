@@ -2,490 +2,359 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Explorer | iOS Minimalist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quran Explorer | iOS</title>
     <style>
         :root {
-            --bg-primary: #f5f5f7;
-            --bg-secondary: #ffffff;
-            --text-primary: #1d1d1f;
-            --text-secondary: #6e6e73;
+            --bg: #f2f2f7;
+            --panel-bg: rgba(255, 255, 255, 0.72);
+            --panel-border: rgba(255, 255, 255, 0.6);
+            --text: #000000;
+            --text-sec: #8e8e93;
             --accent: #007aff;
-            --glass-bg: rgba(255, 255, 255, 0.72);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, "Tajawal", sans-serif;
-            --radius-lg: 20px;
-            --radius-md: 14px;
+            --hover: rgba(0, 122, 255, 0.12);
+            --radius: 20px;
+            --glass: blur(24px) saturate(180%);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Tajawal", "Segoe UI", sans-serif;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-primary: #000000;
-                --bg-secondary: #1c1c1e;
-                --text-primary: #f5f5f7;
-                --text-secondary: #86868b;
-                --glass-bg: rgba(28, 28, 30, 0.78);
-                --glass-border: rgba(255, 255, 255, 0.12);
-                --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                --bg: #000000;
+                --panel-bg: rgba(28, 28, 30, 0.65);
+                --panel-border: rgba(255, 255, 255, 0.15);
+                --text: #ffffff;
+                --text-sec: #86868b;
+                --hover: rgba(255, 255, 255, 0.15);
+                --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
             }
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         html { scroll-behavior: smooth; }
         body {
-            font-family: var(--font-sans);
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-            background-image: radial-gradient(at 10% 10%, rgba(0, 122, 255, 0.08) 0%, transparent 40%), radial-gradient(at 90% 90%, rgba(255, 149, 0, 0.06) 0%, transparent 40%);
+            padding: 16px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 122, 255, 0.08) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(255, 149, 0, 0.06) 0%, transparent 40%);
+            transition: background 0.4s var(--ease);
         }
 
-        .app-container { max-width: 1100px; margin: 0 auto; }
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--glass-shadow);
-            padding: 20px;
-            margin-bottom: 16px;
+        .app-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            height: 95vh;
         }
 
-        header { text-align: center; margin-bottom: 24px; }
-        header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; }
-        header p { color: var(--text-secondary); font-size: 0.95rem; }
-
-        .nav-tabs {
-            display: flex; justify-content: center; gap: 12px; margin-bottom: 24px;
+        .glass {
+            background: var(--panel-bg);
+            backdrop-filter: var(--glass);
+            -webkit-backdrop-filter: var(--glass);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
         }
-        .nav-btn {
-            padding: 10px 20px; border: none; background: var(--glass-bg); backdrop-filter: blur(16px);
-            border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 600; color: var(--text-secondary);
-            cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--glass-border);
-        }
-        .nav-btn:hover { transform: translateY(-2px); color: var(--text-primary); }
-        .nav-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 14px rgba(0,122,255,0.25); }
 
-        .search-box {
-            width: 100%; padding: 14px 18px; font-size: 1rem; border: 1px solid var(--glass-border);
-            background: var(--bg-secondary); color: var(--text-primary); border-radius: var(--radius-md);
-            margin-bottom: 16px; transition: border-color 0.2s;
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            position: sticky;
+            top: 16px;
+            z-index: 50;
         }
-        .search-box:focus { border-color: var(--accent); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+        header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+        
+        #search-box {
+            width: 200px;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 14px;
+            background: rgba(120, 120, 128, 0.12);
+            color: var(--text);
+            font-size: 0.95rem;
+            transition: all 0.2s var(--ease);
+        }
+        #search-box::placeholder { color: var(--text-sec); }
+        #search-box:focus { background: rgba(0, 122, 255, 0.15); box-shadow: 0 0 0 2px var(--accent); }
+
+        main {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 16px;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .surah-list {
+            padding: 12px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(120,120,128,0.4) transparent;
+        }
+        .surah-list::-webkit-scrollbar { width: 6px; }
+        .surah-list::-webkit-scrollbar-thumb { background: rgba(120,120,128,0.4); border-radius: 10px; }
+
         .surah-item {
-            cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: space-between; align-items: center; padding: 16px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s var(--ease);
+            opacity: 0;
+            animation: slideIn 0.3s var(--ease) forwards;
         }
-        .surah-item:hover { background: rgba(120, 120, 128, 0.1); }
-        .surah-info h3 { font-size: 1.1rem; font-weight: 600; }
-        .surah-info span { font-size: 0.8rem; color: var(--text-secondary); }
-        .ayah-count-badge {
-            background: rgba(120, 120, 128, 0.15); padding: 4px 10px; border-radius: 20px;
-            font-size: 0.75rem; font-weight: 600; color: var(--accent);
+        .surah-item:hover, .surah-item.active { background: var(--hover); transform: scale(1.01); }
+        .surah-item span { font-weight: 600; font-size: 1rem; }
+        .surah-item small { color: var(--text-sec); font-size: 0.8rem; }
+
+        .content-area {
+            padding: 24px;
+            overflow-y: auto;
+            position: relative;
         }
 
-        .canvas-container {
-            position: relative; width: 100%; height: 500px; background: var(--bg-secondary);
-            border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--glass-border); margin-bottom: 20px;
+        .empty-state {
+            text-align: center;
+            color: var(--text-sec);
+            margin-top: 30%;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
-        canvas { width: 100%; height: 100%; display: block; }
 
-        .ayah-display {
-            max-height: 450px; overflow-y: auto; padding-right: 4px;
+        .surah-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--panel-border);
         }
-        .ayah-card { padding: 16px; border-bottom: 1px solid var(--glass-border); transition: background 0.2s; }
-        .ayah-card:last-child { border-bottom: none; }
-        .ayah-card:hover { background: rgba(120,120,128,0.05); }
-        .ayah-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .ayah-num { font-size: 0.8rem; color: var(--accent); font-weight: 600; }
-        .ayah-text { font-size: 1.3rem; line-height: 2.2; text-align: justify; margin-bottom: 6px; }
-        .translation-text { font-size: 0.95rem; color: var(--text-secondary); font-style: italic; }
-        .highlight-btn {
-            background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 6px 12px;
-            border-radius: 10px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; font-weight: 500;
+        .surah-header h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+        .surah-header p { color: var(--text-sec); font-size: 0.9rem; }
+
+        .ayah-item {
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 16px;
+            background: rgba(120, 120, 128, 0.05);
+            animation: fadeUp 0.3s var(--ease) both;
+            transition: background 0.2s;
         }
-        .highlight-btn:hover, .highlight-btn.active { background: var(--accent); color: #fff; }
+        .ayah-item:hover { background: var(--hover); }
+        .ayah-meta { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .ayah-num { font-size: 0.8rem; font-weight: 600; color: var(--accent); }
+        .ayah-text { font-size: 1.35rem; line-height: 2; text-align: justify; margin-bottom: 4px; }
+        .ayah-trans { color: var(--text-sec); font-size: 0.95rem; font-style: italic; }
 
-        .empty-state, .loading-state, .error-state { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
-        .spinner { width: 36px; height: 36px; border: 3px solid var(--glass-border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        mark { background: rgba(255, 204, 0, 0.4); color: inherit; padding: 0 4px; border-radius: 6px; }
 
-        @media (max-width: 600px) {
-            body { padding: 12px; }
-            .nav-btn { padding: 8px 14px; font-size: 0.8rem; }
-            .canvas-container { height: 350px; }
+        footer {
+            padding: 12px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .social { display: flex; align-items: center; gap: 6px; color: var(--text-sec); text-decoration: none; transition: color 0.2s; }
+        .social:hover { color: var(--accent); }
+        .social svg { width: 18px; height: 18px; fill: currentColor; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            main { grid-template-columns: 1fr; }
+            .surah-list { max-height: 220px; flex-shrink: 0; }
+            header { flex-direction: column; gap: 12px; }
+            #search-box { width: 100%; }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <header>
-            <h1>مستكشف القرآن</h1>
-            <p>قاعدة بيانات تفاعلية مع تظليل Canvas</p>
+        <header class="glass">
+            <h1>القرآن الكريم</h1>
+            <input type="text" id="search-box" placeholder="ابحث في النص العربي..." autocomplete="off">
         </header>
 
-        <nav class="nav-tabs glass-card" style="padding: 10px;">
-            <button class="nav-btn active" data-tab="surahs">السور</button>
-            <button class="nav-btn" data-tab="reader">العارض</button>
-            <button class="nav-btn" data-tab="search">بحث متقدم</button>
-        </nav>
-
         <main>
-            <section id="view-surahs">
-                <div class="glass-card">
-                    <input type="text" class="search-box" id="surah-filter" placeholder="ابحث عن اسم السورة...">
-                    <div id="state-container" class="loading-state">
-                        <div class="spinner"></div>
-                        <p>جاري تحميل البيانات من quran_data.json...</p>
-                    </div>
-                    <div class="grid" id="surah-grid"></div>
-                </div>
-            </section>
-
-            <section id="view-reader" style="display: none;">
-                <div class="glass-card">
-                    <div class="canvas-container">
-                        <canvas id="quranCanvas"></canvas>
-                    </div>
-                    <div class="ayah-display" id="ayah-display"></div>
-                    <p class="empty-state" id="reader-placeholder" style="display: block;">اختر سورة من القائمة لتبدأ القراءة والتظليل التفاعلي.</p>
-                </div>
-            </section>
-
-            <section id="view-search" style="display: none;">
-                <div class="glass-card">
-                    <input type="text" class="search-box" id="search-input" placeholder="اكتب كلمة للبحث في الآيات والترجمات...">
-                    <div id="search-results" class="grid"></div>
-                </div>
+            <nav id="surah-list" class="glass surah-list"></nav>
+            <section id="content-area" class="glass content-area">
+                <div class="empty-state">اختر سورة من القائمة لبدء القراءة</div>
             </section>
         </main>
+
+        <footer class="glass">
+            <a href="#" class="social" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <span>ne_7u</span>
+            </a>
+            <a href="#" class="social" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                <span>WWGTR</span>
+            </a>
+        </footer>
     </div>
 
     <script>
         /* ============================================
-           Quran Explorer - Dynamic JSON Loader
+           DATA STRUCTURE (Fill this with your DB export)
            ============================================ */
-        const QuranDB = {
-            surahs: [],
-            ayahs: [],
-            translations: [],
-            coords: [],
-            combined: [],
-
-            // دالة الربط المنطقي بين الجداول بناءً على الهيكلية المرفقة
-            loadAndMap(data) {
-                // Normalization: handle potential array/key variations
-                this.surahs = Array.isArray(data.surahs) ? data.surahs : (Array.isArray(data.surah) ? data.surah : []);
-                this.ayahs = Array.isArray(data.ayahs) ? data.ayahs : (Array.isArray(data.ayah) ? data.ayah : []);
-                this.translations = Array.isArray(data.quran_translation) ? data.quran_translation : (Array.isArray(data.translations) ? data.translations : []);
-                this.coords = Array.isArray(data.ayahs_coords) ? data.ayahs_coords : (Array.isArray(data.coords) ? data.coords : []);
-
-                this.buildCombinedMap();
-            },
-
-            buildCombinedMap() {
-                // Join ayahs with surahs, translations, and coordinates
-                this.combined = this.ayahs.map(ayah => {
-                    const surahId = ayah.surahId || ayah.surah_id || ayah.surah_number;
-                    const surah = this.surahs.find(s => (s.id || s.surah_number) === surahId) || {};
-                    const trans = this.translations.find(t => t.ayahId === ayah.id || t.ayah_id === ayah.id) || {};
-                    const coord = this.coords.find(c => c.ayahId === ayah.id || c.ayah_id === ayah.id) || null;
-                    
-                    return {
-                        ayah,
-                        surah,
-                        translation: trans.text || "",
-                        coord
-                    };
-                });
-            },
-
-            getBySurahId(surahId) {
-                return this.combined.filter(item => (item.surah.id || item.surah.surah_number) === surahId);
-            },
-
-            search(query) {
-                const q = query.toLowerCase().trim();
-                if (!q) return [];
-                return this.combined.filter(item => 
-                    (item.ayah.text || "").includes(query) || 
-                    (item.translation || "").toLowerCase().includes(q) || 
-                    (item.surah.name || "").includes(query)
-                );
-            }
-        };
-
-        const UI = {
-            canvas: document.getElementById('quranCanvas'),
-            ctx: null,
-            highlightedId: null,
-            dpr: window.devicePixelRatio || 1,
-
-            setupCanvas() {
-                if (!this.canvas) return;
-                const rect = this.canvas.parentElement.getBoundingClientRect();
-                this.canvas.width = rect.width * this.dpr;
-                this.canvas.height = rect.height * this.dpr;
-                this.canvas.style.width = `${rect.width}px`;
-                this.canvas.style.height = `${rect.height}px`;
-                this.ctx = this.canvas.getContext('2d');
-                this.ctx.scale(this.dpr, this.dpr);
-                this.drawBase();
-            },
-
-            drawBase() {
-                if (!this.ctx) return;
-                const w = this.canvas.width / this.dpr;
-                const h = this.canvas.height / this.dpr;
-                this.ctx.clearRect(0, 0, w, h);
-                
-                // خلفية Canvas
-                this.ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--bg-secondary').trim() || '#fff';
-                this.ctx.fillRect(0, 0, w, h);
-                
-                // رسم مناطق الآيات من جدول ayahs_coords
-                this.ctx.strokeStyle = "rgba(120,120,128,0.3)";
-                this.ctx.lineWidth = 1;
-                this.ctx.setLineDash([4, 4]);
-                this.ctx.font = "12px -apple-system, sans-serif";
-                
-                QuranDB.coords.forEach(c => {
-                    const cx = c.x || 0, cy = c.y || 0, cw = c.width || 300, ch = c.height || 40;
-                    this.ctx.strokeRect(cx, cy, cw, ch);
-                    this.ctx.fillStyle = "rgba(120,120,128,0.5)";
-                    this.ctx.fillText(`ID: ${c.ayahId || c.ayah_id}`, cx + 6, cy + ch - 6);
-                });
-                this.ctx.setLineDash([]);
-            },
-
-            // الدالة المطلوبة للتظليل باستخدام Canvas
-            highlightAyah(ayahId) {
-                if (this.highlightedId === ayahId) {
-                    this.highlightedId = null;
-                    this.drawBase();
-                    // تحديث حالة الأزرار
-                    document.querySelectorAll('.highlight-btn').forEach(b => b.classList.remove('active'));
-                    return;
-                }
-
-                this.highlightedId = ayahId;
-                this.drawBase();
-                
-                const coord = QuranDB.coords.find(c => c.ayahId === ayahId || c.ayah_id === ayahId);
-                if (!coord) {
-                    console.warn(`لا توجد إحداثيات للآية رقم ${ayahId} في جدول ayahs_coords`);
-                    return;
-                }
-
-                this.ctx.save();
-                const cx = coord.x || 0, cy = coord.y || 0, cw = coord.width || 300, ch = coord.height || 40;
-                
-                // تظليل الآية المطلوبة
-                this.ctx.fillStyle = "rgba(0, 122, 255, 0.2)";
-                this.ctx.strokeStyle = "#007aff";
-                this.ctx.lineWidth = 2.5;
-                this.ctx.beginPath();
-                if (this.ctx.roundRect) {
-                    this.ctx.roundRect(cx - 4, cy - 4, cw + 8, ch + 8, 8);
-                } else {
-                    this.ctx.rect(cx - 4, cy - 4, cw + 8, ch + 8);
-                }
-                this.ctx.fill();
-                this.ctx.stroke();
-
-                // تسمية توضيحية
-                this.ctx.fillStyle = "#007aff";
-                this.ctx.font = "bold 13px -apple-system, sans-serif";
-                this.ctx.fillText(`📖 آية ${ayahId} محددة`, cx, cy - 10);
-                this.ctx.restore();
-
-                // تحديث الأزرار
-                document.querySelectorAll('.highlight-btn').forEach(b => {
-                    b.classList.toggle('active', parseInt(b.dataset.id) === ayahId);
-                });
-            }
+        const QURAN_DATA = {
+            surahs: [], // { id: number, name: string, total_ayahs: number }
+            ayahs: []   // { id: number, sid: number (FK->surah.id), text: string, ar_text: string, anum: number }
         };
 
         /* ============================================
-           واجهة المستخدم والعرض
+           CORE LOGIC
            ============================================ */
-        function loadQuranData() {
-            return fetch('quran_data.json')
-                .then(res => {
-                    if (!res.ok) throw new Error(`فشل في جلب الملف (HTTP ${res.status}). تأكد من وجود quran_data.json.`);
-                    return res.json();
-                })
-                .then(data => {
-                    QuranDB.loadAndMap(data);
+        function initializeQuranApp() {
+            const surahListEl = document.getElementById('surah-list');
+            const contentAreaEl = document.getElementById('content-area');
+            const searchInputEl = document.getElementById('search-box');
+
+            // Check if data is loaded
+            if (QURAN_DATA.surahs.length === 0 || QURAN_DATA.ayahs.length === 0) {
+                surahListEl.innerHTML = '<div class="empty-state">⚠️ لم يتم تحميل البيانات.<br>يرجى ملء مصفوفة <code>QURAN_DATA</code>.</div>';
+                return;
+            }
+
+            // 1. Dynamic Mapping & Foreign Key Linking
+            const surahMap = new Map();
+            QURAN_DATA.surahs.forEach(s => surahMap.set(s.id, s));
+
+            // Group ayahs by surah ID for O(1) access
+            const ayahsBySurah = {};
+            const flatAyahs = QURAN_DATA.ayahs.map(ayah => {
+                const surah = surahMap.get(ayah.sid) || {};
+                if (!ayahsBySurah[ayah.sid]) ayahsBySurah[ayah.sid] = [];
+                ayahsBySurah[ayah.sid].push(ayah);
+                return { ...ayah, surahName: surah.name || 'غير محدد' };
+            });
+
+            // Sort each surah's ayahs by verse number
+            Object.keys(ayahsBySurah).forEach(sid => {
+                ayahsBySurah[sid].sort((a, b) => a.anum - b.anum);
+            });
+
+            // 2. Render Surah List
+            function renderSurahList() {
+                surahListEl.innerHTML = '';
+                QURAN_DATA.surahs.forEach((surah, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'surah-item';
+                    item.dataset.id = surah.id;
+                    item.style.animationDelay = `${idx * 0.03}s`;
+                    item.innerHTML = `<span>${surah.name}</span><small>${surah.total_ayahs} آيات</small>`;
+                    item.addEventListener('click', () => {
+                        document.querySelectorAll('.surah-item').forEach(el => el.classList.remove('active'));
+                        item.classList.add('active');
+                        renderAyahs(surah.id);
+                    });
+                    surahListEl.appendChild(item);
+                });
+            }
+
+            // 3. Render Ayahs for Selected Surah
+            function renderAyahs(surahId) {
+                const ayahs = ayahsBySurah[surahId] || [];
+                if (ayahs.length === 0) {
+                    contentAreaEl.innerHTML = '<div class="empty-state">لا توجد آيات متاحة لهذه السورة</div>';
+                    return;
+                }
+
+                const header = document.createElement('div');
+                header.className = 'surah-header';
+                header.innerHTML = `<h2>سورة ${ayahs[0].surahName}</h2><p>${ayahs.length} آية | ترتيب النزول موضح في الجدول</p>`;
+                
+                contentAreaEl.innerHTML = '';
+                contentAreaEl.appendChild(header);
+
+                ayahs.forEach((ayah, idx) => {
+                    const el = document.createElement('div');
+                    el.className = 'ayah-item';
+                    el.style.animationDelay = `${idx * 0.02}s`;
+                    el.innerHTML = `
+                        <div class="ayah-meta">
+                            <span class="ayah-num">آية ${ayah.anum}</span>
+                            <span class="ayah-num" style="color:var(--text-sec)">ID: ${ayah.id}</span>
+                        </div>
+                        <div class="ayah-text">${ayah.ar_text || '...'}</div>
+                        ${ayah.text ? `<div class="ayah-trans">${ayah.text}</div>` : ''}
+                    `;
+                    contentAreaEl.appendChild(el);
+                });
+                contentAreaEl.scrollTop = 0;
+            }
+
+            // 4. Real-time Search (Filters ar_text)
+            let searchTimeout;
+            searchInputEl.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim();
+                
+                if (!query) {
                     renderSurahList();
-                    UI.setupCanvas();
-                    document.getElementById('state-container').style.display = 'none';
-                })
-                .catch(err => {
-                    document.getElementById('state-container').innerHTML = `
-                        <div class="error-state" style="color: var(--accent-red);">
-                            <p style="font-weight:600; margin-bottom:8px;">⚠️ خطأ في تحميل البيانات</p>
-                            <p style="font-size:0.9rem;">${err.message}</p>
-                            <button onclick="loadQuranData()" style="margin-top:12px; padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer;">إعادة المحاولة</button>
-                        </div>`;
-                    console.error(err);
-                });
-        }
+                    contentAreaEl.innerHTML = '<div class="empty-state">اختر سورة من القائمة لبدء القراءة</div>';
+                    document.querySelectorAll('.surah-item').forEach(el => el.classList.remove('active'));
+                    return;
+                }
 
-        function renderSurahList() {
-            const grid = document.getElementById('surah-grid');
-            grid.innerHTML = '';
-            
-            const uniqueSurahs = QuranDB.combined
-                .map(d => d.surah)
-                .filter((v, i, a) => a.findIndex(t => (t.id || t.surah_number) === (v.id || v.surah_number)) === i)
-                .sort((a, b) => (a.id || a.surah_number) - (b.id || b.surah_number));
+                searchTimeout = setTimeout(() => {
+                    const lowerQuery = query.toLowerCase();
+                    const results = flatAyahs.filter(a => a.ar_text && a.ar_text.includes(lowerQuery));
+                    
+                    contentAreaEl.innerHTML = `
+                        <div class="surah-header">
+                            <h2>نتائج البحث</h2>
+                            <p>تم العثور على ${results.length} آية تحتوي على "${query}"</p>
+                        </div>
+                    `;
 
-            if (uniqueSurahs.length === 0) {
-                grid.innerHTML = '<div class="empty-state">لا توجد بيانات للسور في الملف</div>';
-                return;
-            }
+                    if (results.length === 0) {
+                        contentAreaEl.innerHTML += '<div class="empty-state">لا توجد نتائج مطابقة</div>';
+                        return;
+                    }
 
-            uniqueSurahs.forEach(s => {
-                const id = s.id || s.surah_number;
-                const div = document.createElement('div');
-                div.className = 'glass-card surah-item';
-                div.innerHTML = `
-                    <div class="surah-info">
-                        <h3>${s.name || 'غير محدد'}</h3>
-                        <span>${s.englishName || ''} | ${s.type || ''}</span>
-                    </div>
-                    <span class="ayah-count-badge">${s.ayahsCount || s.ayah_count || '?'} آية</span>
-                `;
-                div.addEventListener('click', () => openSurah(id));
-                grid.appendChild(div);
-            });
-        }
-
-        function openSurah(surahId) {
-            const surahData = QuranDB.getBySurahId(surahId);
-            const display = document.getElementById('ayah-display');
-            const placeholder = document.getElementById('reader-placeholder');
-            
-            display.innerHTML = '';
-            placeholder.style.display = 'none';
-            switchTab('reader');
-            UI.highlightedId = null;
-            UI.drawBase();
-
-            surahData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'ayah-card';
-                const id = item.ayah.id || item.ayah.ayah_number;
-                card.innerHTML = `
-                    <div class="ayah-header">
-                        <span class="ayah-num">📖 آية ${item.ayah.number || item.ayah.ayah_number} | سورة ${item.surah.name}</span>
-                        <button class="highlight-btn" data-id="${id}">تظليل Canvas</button>
-                    </div>
-                    <div class="ayah-text">${item.ayah.text || ''}</div>
-                    ${item.translation ? `<div class="translation-text">${item.translation}</div>` : ''}
-                `;
-                display.appendChild(card);
+                    results.forEach((ayah, idx) => {
+                        const el = document.createElement('div');
+                        el.className = 'ayah-item';
+                        el.style.animationDelay = `${idx * 0.02}s`;
+                        // Highlight matching text
+                        const regex = new RegExp(`(${query})`, 'gi');
+                        const highlighted = ayah.ar_text.replace(regex, '<mark>$1</mark>');
+                        el.innerHTML = `
+                            <div class="ayah-meta">
+                                <span class="ayah-num">${ayah.surahName} | آية ${ayah.anum}</span>
+                            </div>
+                            <div class="ayah-text">${highlighted}</div>
+                        `;
+                        contentAreaEl.appendChild(el);
+                    });
+                    contentAreaEl.scrollTop = 0;
+                }, 150);
             });
 
-            // ربط أزرار التظليل
-            display.querySelectorAll('.highlight-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = parseInt(e.target.dataset.id);
-                    highlightAyah(id);
-                });
-            });
+            // Initialize View
+            renderSurahList();
         }
 
-        function handleSearch(e) {
-            const query = e.target.value;
-            const container = document.getElementById('search-results');
-            container.innerHTML = '';
-            if (query.length < 2) return;
-
-            const results = QuranDB.search(query);
-            if (results.length === 0) {
-                container.innerHTML = '<div class="empty-state">لم يتم العثور على نتائج مطابقة</div>';
-                return;
-            }
-
-            results.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'glass-card';
-                div.style.cursor = 'pointer';
-                const id = (item.surah.id || item.surah.surah_number);
-                div.innerHTML = `
-                    <div class="ayah-header"><span class="ayah-num">سورة ${item.surah.name} | آية ${item.ayah.number || item.ayah.ayah_number}</span></div>
-                    <div class="ayah-text">${item.ayah.text}</div>
-                    ${item.translation ? `<div class="translation-text">${item.translation}</div>` : ''}
-                `;
-                div.addEventListener('click', () => openSurah(id));
-                container.appendChild(div);
-            });
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabId));
-            document.querySelectorAll('section[id^="view-"]').forEach(sec => sec.style.display = 'none');
-            document.getElementById(`view-${tabId}`).style.display = 'block';
-            if (tabId === 'reader') {
-                setTimeout(() => UI.setupCanvas(), 50);
-            }
-        }
-
-        /* ============================================
-           Global Functions & Initialization
-           ============================================ */
-        window.highlightAyah = function(ayahId) {
-            UI.highlightAyah(ayahId);
-        };
-
-        window.loadQuranData = loadQuranData;
-
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-        });
-
-        document.getElementById('surah-filter').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtered = QuranDB.combined.filter(item => (item.surah.name || '').includes(val));
-            const grid = document.getElementById('surah-grid');
-            grid.innerHTML = '';
-            const unique = filtered.map(d => d.surah).filter((v, i, a) => a.findIndex(t => (t.id || t.surah_number) === (v.id || v.surah_number)) === i);
-            if (unique.length === 0) {
-                grid.innerHTML = '<div class="empty-state">لا توجد نتائج</div>';
-                return;
-            }
-            unique.forEach(s => {
-                const id = s.id || s.surah_number;
-                const div = document.createElement('div');
-                div.className = 'glass-card surah-item';
-                div.innerHTML = `
-                    <div class="surah-info"><h3>${s.name || 'غير محدد'}</h3><span>${s.englishName || ''}</span></div>
-                    <span class="ayah-count-badge">${s.ayahsCount || '?'} آية</span>
-                `;
-                div.addEventListener('click', () => openSurah(id));
-                grid.appendChild(div);
-            });
-        });
-
-        document.getElementById('search-input').addEventListener('input', handleSearch);
-
-        window.addEventListener('resize', () => {
-            clearTimeout(window.resizeTimer);
-            window.resizeTimer = setTimeout(() => UI.setupCanvas(), 200);
-        });
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadQuranData);
-        } else {
-            loadQuranData();
-        }
+        // Boot
+        document.addEventListener('DOMContentLoaded', initializeQuranApp);
     </script>
 </body>
 </html>
