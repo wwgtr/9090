@@ -1,0 +1,2004 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body {
+                  background-color: white; /* Ensure the iframe has a white background */
+                }
+
+                /* ============================================
+   CSS Variables & Reset
+   ============================================ */
+:root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1a2332;
+    --glass-bg: rgba(17, 24, 39, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: rgba(0, 0, 0, 0.4);
+    --text-primary: #f0f4f8;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-gold: #d4a843;
+    --accent-gold-light: #f0d78c;
+    --accent-gold-dark: #b8922e;
+    --accent-blue: #3b82f6;
+    --accent-green: #22c55e;
+    --accent-red: #ef4444;
+    --accent-purple: #a855f7;
+    --font-arabic: 'Tajawal', sans-serif;
+    --font-english: 'Inter', sans-serif;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-arabic);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(212, 168, 67, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============================================
+   Frosted Glass Effect
+   ============================================ */
+.frosted-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px var(--glass-shadow);
+}
+
+/* ============================================
+   App Container
+   ============================================ */
+.app-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.app-header {
+    margin-bottom: 24px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 28px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 16px;
+}
+
+.app-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 16px rgba(212, 168, 67, 0.3);
+}
+
+.header-text {
+    flex: 1;
+}
+
+.app-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.app-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: var(--font-english);
+    letter-spacing: 0.5px;
+}
+
+.app-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-family: var(--font-arabic);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.nav-btn:hover {
+    background: rgba(212, 168, 67, 0.1);
+    border-color: rgba(212, 168, 67, 0.3);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.nav-btn.active {
+    background: linear-gradient(135deg, rgba(212, 168, 67, 0.2), rgba(212, 168, 67, 0.05));
+    border-color: var(--accent-gold);
+    color: var(--accent-gold-light);
+    box-shadow: 0 4px 16px rgba(212, 168, 67, 0.15);
+}
+
+.nav-icon {
+    font-size: 1.1rem;
+}
+
+/* ============================================
+   Main Content
+   ============================================ */
+.app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.view-section {
+    display: none;
+    animation: fadeIn var(--transition-normal) ease;
+}
+
+.view-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   Stats Grid
+   ============================================ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-normal);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(212, 168, 67, 0.2);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 168, 67, 0.1);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ============================================
+   Canvas Containers
+   ============================================ */
+.canvas-container {
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+canvas {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+}
+
+/* ============================================
+   Surahs View
+   ============================================ */
+.surah-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.filter-group select,
+.search-input {
+    padding: 8px 16px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-family: var(--font-arabic);
+    outline: none;
+    transition: border-color var(--transition-fast);
+    min-width: 160px;
+}
+
+.filter-group select:focus,
+.search-input:focus {
+    border-color: var(--accent-gold);
+}
+
+.search-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-input {
+    width: 100%;
+}
+
+.surah-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.surah-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: 1px solid transparent;
+}
+
+.surah-item:hover {
+    background: rgba(212, 168, 67, 0.08);
+    border-color: rgba(212, 168, 67, 0.2);
+    transform: translateX(-4px);
+}
+
+.surah-number {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent-gold-dark), var(--accent-gold));
+    color: var(--bg-primary);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.surah-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.surah-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.surah-english-name {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-english);
+}
+
+.surah-meta-badges {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.badge {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: var(--font-english);
+    letter-spacing: 0.3px;
+}
+
+.badge-meccan {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge-medinan {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.badge-juz {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* ============================================
+   Search View
+   ============================================ */
+.search-container {
+    padding: 24px;
+    border-radius: var(--radius-lg);
+}
+
+.search-header {
+    margin-bottom: 20px;
+}
+
+.search-input-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.search-input-large {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-arabic);
+    outline: none;
+    transition: all var(--transition-normal);
+}
+
+.search-input-large:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.1);
+}
+
+.search-btn {
+    padding: 14px 32px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--accent-gold-dark), var(--accent-gold));
+    color: var(--bg-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-arabic);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    white-space: nowrap;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 168, 67, 0.3);
+}
+
+.search-options {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    accent-color: var(--accent-gold);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-left: 4px;
+}
+
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 3px;
+}
+
+.search-result-item {
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    transition: all var(--transition-normal);
+}
+
+.search-result-item:hover {
+    border-color: rgba(212, 168, 67, 0.2);
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.result-surah {
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+.result-ayah-num {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-english);
+}
+
+.result-text {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 2;
+}
+
+.result-text .highlight {
+    background: rgba(212, 168, 67, 0.3);
+    color: var(--accent-gold-light);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.result-empty {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   Charts View
+   ============================================ */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.chart-card {
+    padding: 24px;
+    border-radius: var(--radius-lg);
+}
+
+.chart-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+/* ============================================
+   Modal
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn var(--transition-normal);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 700px;
+    max-height: 85vh;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background: var(--accent-red);
+    color: white;
+    border-color: var(--accent-red);
+}
+
+.modal-header {
+    padding: 24px 28px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.modal-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-gold-light);
+}
+
+.modal-badge {
+    font-size: 0.75rem;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-family: var(--font-english);
+}
+
+.modal-body {
+    padding: 20px 28px 28px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 3px;
+}
+
+.surah-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 16px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    min-width: 90px;
+}
+
+.meta-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.meta-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+}
+
+.surah-ayahs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ayah-item {
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    transition: all var(--transition-fast);
+}
+
+.ayah-item:hover {
+    border-color: rgba(212, 168, 67, 0.2);
+    background: rgba(212, 168, 67, 0.03);
+}
+
+.ayah-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.ayah-number {
+    font-size: 0.75rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-family: var(--font-english);
+}
+
+.ayah-text {
+    font-size: 1.15rem;
+    line-height: 2.2;
+    color: var(--text-primary);
+    text-align: justify;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.app-footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 24px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 12px;
+    }
+
+    .app-title {
+        font-size: 1.2rem;
+    }
+
+    .app-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .surah-list {
+        grid-template-columns: 1fr;
+    }
+
+    .surah-controls {
+        flex-direction: column;
+    }
+
+    .filter-group select,
+    .search-input {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .nav-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    .search-input-wrapper {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        max-height: 95vh;
+        border-radius: var(--radius-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 14px 18px;
+    }
+
+    .stat-value {
+        font-size: 1.4rem;
+    }
+
+    .header-content {
+        padding: 14px 18px;
+    }
+}
+
+/* ============================================
+   Loading Animation
+   ============================================ */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--glass-border);
+    border-top-color: var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Utility
+   ============================================ */
+.text-gold { color: var(--accent-gold); }
+.text-muted { color: var(--text-muted); }
+.text-center { text-align: center; }
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+
+
+              </style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Database Explorer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="https://image.qwenlm.ai/public_source/f89957fa-4a59-4a08-b043-d35ed0dad11e/16fdaf0ce-fdd6-4cf0-adc2-fe09622c8f0e.png">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <img src="https://image.qwenlm.ai/public_source/f89957fa-4a59-4a08-b043-d35ed0dad11e/16fdaf0ce-fdd6-4cf0-adc2-fe09622c8f0e.png" alt="Quran Database Logo" class="app-logo">
+                <div class="header-text">
+                    <h1 class="app-title">مستكشف قاعدة بيانات القرآن الكريم</h1>
+                    <p class="app-subtitle">Quran Database Explorer</p>
+                </div>
+            </div>
+            <nav class="app-nav">
+                <button class="nav-btn active" data-view="dashboard" id="btn-dashboard">
+                    <span class="nav-icon">📊</span>
+                    لوحة التحكم
+                </button>
+                <button class="nav-btn" data-view="surahs" id="btn-surahs">
+                    <span class="nav-icon">📖</span>
+                    السور
+                </button>
+                <button class="nav-btn" data-view="search" id="btn-search">
+                    <span class="nav-icon">🔍</span>
+                    بحث
+                </button>
+                <button class="nav-btn" data-view="charts" id="btn-charts">
+                    <span class="nav-icon">📈</span>
+                    الرسوم
+                </button>
+            </nav>
+        </header>
+
+        <main class="app-main">
+            <!-- Dashboard View -->
+            <section class="view-section active" id="view-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card" id="stat-total-surahs">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="val-total-surahs">0</span>
+                            <span class="stat-label">إجمالي السور</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="stat-total-ayahs">
+                        <div class="stat-icon">✨</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="val-total-ayahs">0</span>
+                            <span class="stat-label">إجمالي الآيات</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="stat-total-pages">
+                        <div class="stat-icon"></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="val-total-pages">0</span>
+                            <span class="stat-label">إجمالي الصفحات</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="stat-total-juz">
+                        <div class="stat-icon">📕</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="val-total-juz">0</span>
+                            <span class="stat-label">إجمالي الأجزاء</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="stat-longest-surah">
+                        <div class="stat-icon">📏</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="val-longest-surah">-</span>
+                            <span class="stat-label">أطول سورة</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="stat-shortest-surah">
+                        <div class="stat-icon">📐</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="val-shortest-surah">-</span>
+                            <span class="stat-label">أقصر سورة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-container" id="canvas-overview">
+                    <h2 class="section-title">توزيع الآيات حسب السور</h2>
+                    <canvas id="overviewCanvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Surahs View -->
+            <section class="view-section" id="view-surahs">
+                <div class="surah-controls">
+                    <div class="filter-group">
+                        <label for="juz-filter">تصفية حسب الجزء:</label>
+                        <select id="juz-filter">
+                            <option value="all">جميع الأجزاء</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="type-filter">نوع السورة:</label>
+                        <select id="type-filter">
+                            <option value="all">الكل</option>
+                            <option value="meccan">مكية</option>
+                            <option value="medinan">مدنية</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <input type="text" id="surah-search" placeholder="ابحث عن سورة..." class="search-input">
+                    </div>
+                </div>
+                <div class="surah-list" id="surah-list"></div>
+            </section>
+
+            <!-- Search View -->
+            <section class="view-section" id="view-search">
+                <div class="search-container">
+                    <div class="search-header">
+                        <h2 class="section-title">البحث في القرآن الكريم</h2>
+                        <div class="search-input-wrapper">
+                            <input type="text" id="ayah-search" placeholder="اكتب كلمة للبحث عن آية..." class="search-input-large">
+                            <button class="search-btn" id="btn-ayah-search">بحث</button>
+                        </div>
+                    </div>
+                    <div class="search-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exact-match">
+                            تطابق تام
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="case-sensitive">
+                            حساس لحالة الأحرف
+                        </label>
+                    </div>
+                    <div class="search-results" id="search-results"></div>
+                </div>
+            </section>
+
+            <!-- Charts View -->
+            <section class="view-section" id="view-charts">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3 class="chart-title">أطول 10 سور</h3>
+                        <canvas id="topSurahsCanvas"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">توزيع السور حسب نوعها</h3>
+                        <canvas id="typeDistCanvas"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">توزيع الآيات حسب الجزء</h3>
+                        <canvas id="juzDistCanvas"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">توزيع الصفحات</h3>
+                        <canvas id="pageDistCanvas"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>Quran Database Explorer &copy; 2026 &mdash; جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <!-- Surah Detail Modal -->
+    <div class="modal-overlay" id="surah-modal">
+        <div class="modal-content frosted-glass">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-surah-name"></h2>
+                <span class="modal-badge" id="modal-surah-type"></span>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="surah-meta" id="surah-meta"></div>
+                <div class="surah-ayahs" id="surah-ayahs"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
+
+
+              <script>
+                              /* ============================================
+   Quran Database Explorer - Application Logic
+   ============================================ */
+
+(function () {
+    'use strict';
+
+    /* ----------------------------------------
+       Quran Data (114 Surahs)
+       ---------------------------------------- */
+    const QURAN_DATA = [
+        { number: 1, name: "الفاتحة", englishName: "Al-Fatiha", englishNameTranslation: "The Opening", ayahs: 7, type: "meccan", page: 1, juz: 1 },
+        { number: 2, name: "البقرة", englishName: "Al-Baqarah", englishNameTranslation: "The Cow", ayahs: 286, type: "medinan", page: 2, juz: 1 },
+        { number: 3, name: "آل عمران", englishName: "Aal-Imran", englishNameTranslation: "The Family of Imran", ayahs: 200, type: "medinan", page: 50, juz: 3 },
+        { number: 4, name: "النساء", englishName: "An-Nisa", englishNameTranslation: "The Women", ayahs: 176, type: "medinan", page: 77, juz: 4 },
+        { number: 5, name: "المائدة", englishName: "Al-Ma'idah", englishNameTranslation: "The Table Spread", ayahs: 120, type: "medinan", page: 106, juz: 6 },
+        { number: 6, name: "الأنعام", englishName: "Al-An'am", englishNameTranslation: "The Cattle", ayahs: 165, type: "meccan", page: 128, juz: 7 },
+        { number: 7, name: "الأعراف", englishName: "Al-A'raf", englishNameTranslation: "The Heights", ayahs: 206, type: "meccan", page: 151, juz: 8 },
+        { number: 8, name: "الأنفال", englishName: "Al-Anfal", englishNameTranslation: "The Spoils of War", ayahs: 75, type: "medinan", page: 177, juz: 9 },
+        { number: 9, name: "التوبة", englishName: "At-Tawbah", englishNameTranslation: "The Repentance", ayahs: 129, type: "medinan", page: 187, juz: 10 },
+        { number: 10, name: "يونس", englishName: "Yunus", englishNameTranslation: "Jonah", ayahs: 109, type: "meccan", page: 208, juz: 11 },
+        { number: 11, name: "هود", englishName: "Hud", englishNameTranslation: "Hud", ayahs: 123, type: "meccan", page: 221, juz: 12 },
+        { number: 12, name: "يوسف", englishName: "Yusuf", englishNameTranslation: "Joseph", ayahs: 111, type: "meccan", page: 235, juz: 12 },
+        { number: 13, name: "الرعد", englishName: "Ar-Ra'd", englishNameTranslation: "The Thunder", ayahs: 43, type: "medinan", page: 249, juz: 13 },
+        { number: 14, name: "إبراهيم", englishName: "Ibrahim", englishNameTranslation: "Abraham", ayahs: 52, type: "meccan", page: 255, juz: 13 },
+        { number: 15, name: "الحجر", englishName: "Al-Hijr", englishNameTranslation: "The Rocky Tract", ayahs: 99, type: "meccan", page: 262, juz: 14 },
+        { number: 16, name: "النحل", englishName: "An-Nahl", englishNameTranslation: "The Bee", ayahs: 128, type: "meccan", page: 267, juz: 14 },
+        { number: 17, name: "الإسراء", englishName: "Al-Isra", englishNameTranslation: "The Night Journey", ayahs: 111, type: "meccan", page: 282, juz: 15 },
+        { number: 18, name: "الكهف", englishName: "Al-Kahf", englishNameTranslation: "The Cave", ayahs: 110, type: "meccan", page: 293, juz: 15 },
+        { number: 19, name: "مريم", englishName: "Maryam", englishNameTranslation: "Mary", ayahs: 98, type: "meccan", page: 305, juz: 16 },
+        { number: 20, name: "طه", englishName: "Ta-Ha", englishNameTranslation: "Ta-Ha", ayahs: 135, type: "meccan", page: 312, juz: 16 },
+        { number: 21, name: "الأنبياء", englishName: "Al-Anbiya", englishNameTranslation: "The Prophets", ayahs: 112, type: "meccan", page: 322, juz: 17 },
+        { number: 22, name: "الحج", englishName: "Al-Hajj", englishNameTranslation: "The Pilgrimage", ayahs: 78, type: "medinan", page: 332, juz: 17 },
+        { number: 23, name: "المؤمنون", englishName: "Al-Mu'minun", englishNameTranslation: "The Believers", ayahs: 118, type: "meccan", page: 342, juz: 18 },
+        { number: 24, name: "النور", englishName: "An-Nur", englishNameTranslation: "The Light", ayahs: 64, type: "medinan", page: 350, juz: 18 },
+        { number: 25, name: "الفرقان", englishName: "Al-Furqan", englishNameTranslation: "The Criterion", ayahs: 77, type: "meccan", page: 359, juz: 18 },
+        { number: 26, name: "الشعراء", englishName: "Ash-Shu'ara", englishNameTranslation: "The Poets", ayahs: 227, type: "meccan", page: 367, juz: 19 },
+        { number: 27, name: "النمل", englishName: "An-Naml", englishNameTranslation: "The Ant", ayahs: 93, type: "meccan", page: 377, juz: 19 },
+        { number: 28, name: "القصص", englishName: "Al-Qasas", englishNameTranslation: "The Stories", ayahs: 88, type: "meccan", page: 385, juz: 20 },
+        { number: 29, name: "العنكبوت", englishName: "Al-Ankabut", englishNameTranslation: "The Spider", ayahs: 69, type: "meccan", page: 396, juz: 20 },
+        { number: 30, name: "الروم", englishName: "Ar-Rum", englishNameTranslation: "The Romans", ayahs: 60, type: "meccan", page: 404, juz: 21 },
+        { number: 31, name: "لقمان", englishName: "Luqman", englishNameTranslation: "Luqman", ayahs: 34, type: "meccan", page: 411, juz: 21 },
+        { number: 32, name: "السجدة", englishName: "As-Sajdah", englishNameTranslation: "The Prostration", ayahs: 30, type: "meccan", page: 415, juz: 21 },
+        { number: 33, name: "الأحزاب", englishName: "Al-Ahzab", englishNameTranslation: "The Combined Forces", ayahs: 73, type: "medinan", page: 418, juz: 21 },
+        { number: 34, name: "سبأ", englishName: "Saba", englishNameTranslation: "Sheba", ayahs: 54, type: "meccan", page: 428, juz: 22 },
+        { number: 35, name: "فاطر", englishName: "Fatir", englishNameTranslation: "The Originator", ayahs: 45, type: "meccan", page: 434, juz: 22 },
+        { number: 36, name: "يس", englishName: "Ya-Sin", englishNameTranslation: "Ya-Sin", ayahs: 83, type: "meccan", page: 440, juz: 22 },
+        { number: 37, name: "الصافات", englishName: "As-Saffat", englishNameTranslation: "Those Ranged in Rows", ayahs: 182, type: "meccan", page: 446, juz: 23 },
+        { number: 38, name: "ص", englishName: "Sad", englishNameTranslation: "Sad", ayahs: 88, type: "meccan", page: 453, juz: 23 },
+        { number: 39, name: "الزمر", englishName: "Az-Zumar", englishNameTranslation: "The Troops", ayahs: 75, type: "meccan", page: 458, juz: 23 },
+        { number: 40, name: "غافر", englishName: "Ghafir", englishNameTranslation: "The Forgiver", ayahs: 85, type: "meccan", page: 467, juz: 24 },
+        { number: 41, name: "فصلت", englishName: "Fussilat", englishNameTranslation: "Explained in Detail", ayahs: 54, type: "meccan", page: 477, juz: 24 },
+        { number: 42, name: "الشورى", englishName: "Ash-Shura", englishNameTranslation: "The Consultation", ayahs: 53, type: "meccan", page: 483, juz: 25 },
+        { number: 43, name: "الزخرف", englishName: "Az-Zukhruf", englishNameTranslation: "The Ornaments of Gold", ayahs: 89, type: "meccan", page: 489, juz: 25 },
+        { number: 44, name: "الدخان", englishName: "Ad-Dukhan", englishNameTranslation: "The Smoke", ayahs: 59, type: "meccan", page: 496, juz: 25 },
+        { number: 45, name: "الجاثية", englishName: "Al-Jathiyah", englishNameTranslation: "The Crouching", ayahs: 37, type: "meccan", page: 499, juz: 25 },
+        { number: 46, name: "الأحقاف", englishName: "Al-Ahqaf", englishNameTranslation: "The Wind-Curved Sandhills", ayahs: 35, type: "meccan", page: 502, juz: 26 },
+        { number: 47, name: "محمد", englishName: "Muhammad", englishNameTranslation: "Muhammad", ayahs: 38, type: "medinan", page: 507, juz: 26 },
+        { number: 48, name: "الفتح", englishName: "Al-Fath", englishNameTranslation: "The Victory", ayahs: 29, type: "medinan", page: 511, juz: 26 },
+        { number: 49, name: "الحجرات", englishName: "Al-Hujurat", englishNameTranslation: "The Rooms", ayahs: 18, type: "medinan", page: 515, juz: 26 },
+        { number: 50, name: "ق", englishName: "Qaf", englishNameTranslation: "Qaf", ayahs: 45, type: "meccan", page: 518, juz: 26 },
+        { number: 51, name: "الذاريات", englishName: "Adh-Dhariyat", englishNameTranslation: "The Winnowing Winds", ayahs: 60, type: "meccan", page: 520, juz: 26 },
+        { number: 52, name: "الطور", englishName: "At-Tur", englishNameTranslation: "The Mount", ayahs: 49, type: "meccan", page: 523, juz: 27 },
+        { number: 53, name: "النجم", englishName: "An-Najm", englishNameTranslation: "The Star", ayahs: 62, type: "meccan", page: 526, juz: 27 },
+        { number: 54, name: "القمر", englishName: "Al-Qamar", englishNameTranslation: "The Moon", ayahs: 55, type: "meccan", page: 528, juz: 27 },
+        { number: 55, name: "الرحمن", englishName: "Ar-Rahman", englishNameTranslation: "The Beneficent", ayahs: 78, type: "medinan", page: 531, juz: 27 },
+        { number: 56, name: "الواقعة", englishName: "Al-Waqi'ah", englishNameTranslation: "The Inevitable", ayahs: 96, type: "meccan", page: 534, juz: 27 },
+        { number: 57, name: "الحديد", englishName: "Al-Hadid", englishNameTranslation: "The Iron", ayahs: 29, type: "medinan", page: 537, juz: 27 },
+        { number: 58, name: "المجادلة", englishName: "Al-Mujadila", englishNameTranslation: "The Pleading Woman", ayahs: 22, type: "medinan", page: 542, juz: 28 },
+        { number: 59, name: "الحشر", englishName: "Al-Hashr", englishNameTranslation: "The Exile", ayahs: 24, type: "medinan", page: 545, juz: 28 },
+        { number: 60, name: "الممتحنة", englishName: "Al-Mumtahanah", englishNameTranslation: "She That is Examined", ayahs: 13, type: "medinan", page: 549, juz: 28 },
+        { number: 61, name: "الصف", englishName: "As-Saf", englishNameTranslation: "The Ranks", ayahs: 14, type: "medinan", page: 551, juz: 28 },
+        { number: 62, name: "الجمعة", englishName: "Al-Jumu'ah", englishNameTranslation: "Friday", ayahs: 11, type: "medinan", page: 553, juz: 28 },
+        { number: 63, name: "المنافقون", englishName: "Al-Munafiqun", englishNameTranslation: "The Hypocrites", ayahs: 11, type: "medinan", page: 554, juz: 28 },
+        { number: 64, name: "التغابن", englishName: "At-Taghabun", englishNameTranslation: "The Mutual Disillusion", ayahs: 18, type: "medinan", page: 556, juz: 28 },
+        { number: 65, name: "الطلاق", englishName: "At-Talaq", englishNameTranslation: "The Divorce", ayahs: 12, type: "medinan", page: 558, juz: 28 },
+        { number: 66, name: "التحريم", englishName: "At-Tahrim", englishNameTranslation: "The Prohibition", ayahs: 12, type: "medinan", page: 560, juz: 28 },
+        { number: 67, name: "الملك", englishName: "Al-Mulk", englishNameTranslation: "The Sovereignty", ayahs: 30, type: "meccan", page: 562, juz: 29 },
+        { number: 68, name: "القلم", englishName: "Al-Qalam", englishNameTranslation: "The Pen", ayahs: 52, type: "meccan", page: 564, juz: 29 },
+        { number: 69, name: "الحاقة", englishName: "Al-Haqqah", englishNameTranslation: "The Reality", ayahs: 52, type: "meccan", page: 566, juz: 29 },
+        { number: 70, name: "المعارج", englishName: "Al-Ma'arij", englishNameTranslation: "The Ascending Stairways", ayahs: 44, type: "meccan", page: 568, juz: 29 },
+        { number: 71, name: "نوح", englishName: "Nuh", englishNameTranslation: "Noah", ayahs: 28, type: "meccan", page: 570, juz: 29 },
+        { number: 72, name: "الجن", englishName: "Al-Jinn", englishNameTranslation: "The Jinn", ayahs: 28, type: "meccan", page: 572, juz: 29 },
+        { number: 73, name: "المزمل", englishName: "Al-Muzzammil", englishNameTranslation: "The Enshrouded One", ayahs: 20, type: "meccan", page: 574, juz: 29 },
+        { number: 74, name: "المدثر", englishName: "Al-Muddaththir", englishNameTranslation: "The Cloaked One", ayahs: 56, type: "meccan", page: 575, juz: 29 },
+        { number: 75, name: "القيامة", englishName: "Al-Qiyamah", englishNameTranslation: "The Resurrection", ayahs: 40, type: "meccan", page: 577, juz: 29 },
+        { number: 76, name: "الإنسان", englishName: "Al-Insan", englishNameTranslation: "The Human", ayahs: 31, type: "medinan", page: 578, juz: 29 },
+        { number: 77, name: "المرسلات", englishName: "Al-Mursalat", englishNameTranslation: "The Emissaries", ayahs: 50, type: "meccan", page: 580, juz: 29 },
+        { number: 78, name: "النبأ", englishName: "An-Naba", englishNameTranslation: "The Tidings", ayahs: 40, type: "meccan", page: 582, juz: 30 },
+        { number: 79, name: "النازعات", englishName: "An-Nazi'at", englishNameTranslation: "Those Who Drag Forth", ayahs: 46, type: "meccan", page: 583, juz: 30 },
+        { number: 80, name: "عبس", englishName: "Abasa", englishNameTranslation: "He Frowned", ayahs: 42, type: "meccan", page: 585, juz: 30 },
+        { number: 81, name: "التكوير", englishName: "At-Takwir", englishNameTranslation: "The Overthrowing", ayahs: 29, type: "meccan", page: 586, juz: 30 },
+        { number: 82, name: "الانفطار", englishName: "Al-Infitar", englishNameTranslation: "The Cleaving", ayahs: 19, type: "meccan", page: 587, juz: 30 },
+        { number: 83, name: "المطففين", englishName: "Al-Mutaffifin", englishNameTranslation: "The Defrauding", ayahs: 36, type: "meccan", page: 587, juz: 30 },
+        { number: 84, name: "الانشقاق", englishName: "Al-Inshiqaq", englishNameTranslation: "The Splitting Open", ayahs: 25, type: "meccan", page: 589, juz: 30 },
+        { number: 85, name: "البروج", englishName: "Al-Buruj", englishNameTranslation: "The Mansions of Stars", ayahs: 22, type: "meccan", page: 590, juz: 30 },
+        { number: 86, name: "الطارق", englishName: "At-Tariq", englishNameTranslation: "The Morning Star", ayahs: 17, type: "meccan", page: 591, juz: 30 },
+        { number: 87, name: "الأعلى", englishName: "Al-A'la", englishNameTranslation: "The Most High", ayahs: 19, type: "meccan", page: 591, juz: 30 },
+        { number: 88, name: "الغاشية", englishName: "Al-Ghashiyah", englishNameTranslation: "The Overwhelming", ayahs: 26, type: "meccan", page: 592, juz: 30 },
+        { number: 89, name: "الفجر", englishName: "Al-Fajr", englishNameTranslation: "The Dawn", ayahs: 30, type: "meccan", page: 593, juz: 30 },
+        { number: 90, name: "البلد", englishName: "Al-Balad", englishNameTranslation: "The City", ayahs: 20, type: "meccan", page: 594, juz: 30 },
+        { number: 91, name: "الشمس", englishName: "Ash-Shams", englishNameTranslation: "The Sun", ayahs: 15, type: "meccan", page: 595, juz: 30 },
+        { number: 92, name: "الليل", englishName: "Al-Layl", englishNameTranslation: "The Night", ayahs: 21, type: "meccan", page: 595, juz: 30 },
+        { number: 93, name: "الضحى", englishName: "Ad-Duha", englishNameTranslation: "The Morning Hours", ayahs: 11, type: "meccan", page: 596, juz: 30 },
+        { number: 94, name: "الشرح", englishName: "Ash-Sharh", englishNameTranslation: "The Relief", ayahs: 8, type: "meccan", page: 596, juz: 30 },
+        { number: 95, name: "التين", englishName: "At-Tin", englishNameTranslation: "The Fig", ayahs: 8, type: "meccan", page: 597, juz: 30 },
+        { number: 96, name: "العلق", englishName: "Al-Alaq", englishNameTranslation: "The Clot", ayahs: 19, type: "meccan", page: 597, juz: 30 },
+        { number: 97, name: "القدر", englishName: "Al-Qadr", englishNameTranslation: "The Power", ayahs: 5, type: "meccan", page: 598, juz: 30 },
+        { number: 98, name: "البينة", englishName: "Al-Bayyinah", englishNameTranslation: "The Clear Proof", ayahs: 8, type: "medinan", page: 598, juz: 30 },
+        { number: 99, name: "الزلزلة", englishName: "Az-Zalzalah", englishNameTranslation: "The Earthquake", ayahs: 8, type: "medinan", page: 599, juz: 30 },
+        { number: 100, name: "العاديات", englishName: "Al-Adiyat", englishNameTranslation: "The Courser", ayahs: 11, type: "meccan", page: 599, juz: 30 },
+        { number: 101, name: "القارعة", englishName: "Al-Qari'ah", englishNameTranslation: "The Calamity", ayahs: 11, type: "meccan", page: 600, juz: 30 },
+        { number: 102, name: "التكاثر", englishName: "At-Takathur", englishNameTranslation: "The Rivalry in Worldly Increase", ayahs: 8, type: "meccan", page: 600, juz: 30 },
+        { number: 103, name: "العصر", englishName: "Al-Asr", englishNameTranslation: "The Declining Day", ayahs: 3, type: "meccan", page: 601, juz: 30 },
+        { number: 104, name: "الهمزة", englishName: "Al-Humazah", englishNameTranslation: "The Traducer", ayahs: 9, type: "meccan", page: 601, juz: 30 },
+        { number: 105, name: "الفيل", englishName: "Al-Fil", englishNameTranslation: "The Elephant", ayahs: 5, type: "meccan", page: 601, juz: 30 },
+        { number: 106, name: "قريش", englishName: "Quraysh", englishNameTranslation: "Quraysh", ayahs: 4, type: "meccan", page: 602, juz: 30 },
+        { number: 107, name: "الماعون", englishName: "Al-Ma'un", englishNameTranslation: "The Small Kindnesses", ayahs: 7, type: "meccan", page: 602, juz: 30 },
+        { number: 108, name: "الكوثر", englishName: "Al-Kawthar", englishNameTranslation: "The Abundance", ayahs: 3, type: "meccan", page: 602, juz: 30 },
+        { number: 109, name: "الكافرون", englishName: "Al-Kafirun", englishNameTranslation: "The Disbelievers", ayahs: 6, type: "meccan", page: 603, juz: 30 },
+        { number: 110, name: "النصر", englishName: "An-Nasr", englishNameTranslation: "The Divine Support", ayahs: 3, type: "medinan", page: 603, juz: 30 },
+        { number: 111, name: "المسد", englishName: "Al-Masad", englishNameTranslation: "The Palm Fiber", ayahs: 5, type: "meccan", page: 603, juz: 30 },
+        { number: 112, name: "الإخلاص", englishName: "Al-Ikhlas", englishNameTranslation: "The Sincerity", ayahs: 4, type: "meccan", page: 604, juz: 30 },
+        { number: 113, name: "الفلق", englishName: "Al-Falaq", englishNameTranslation: "The Daybreak", ayahs: 5, type: "meccan", page: 604, juz: 30 },
+        { number: 114, name: "الناس", englishName: "An-Nas", englishNameTranslation: "Mankind", ayahs: 6, type: "meccan", page: 604, juz: 30 }
+    ];
+
+    /* ----------------------------------------
+       Sample Ayah Texts (Key ayahs per surah)
+       ---------------------------------------- */
+    const AYAH_TEXTS = {
+        1: [
+            { number: 1, text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ" },
+            { number: 2, text: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ" },
+            { number: 3, text: "الرَّحْمَٰنِ الرَّحِيمِ" },
+            { number: 4, text: "مَالِكِ يَوْمِ الدِّينِ" },
+            { number: 5, text: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ" },
+            { number: 6, text: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ" },
+            { number: 7, text: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ" }
+        ],
+        2: [
+            { number: 1, text: "الم" },
+            { number: 2, text: "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِلْمُتَّقِينَ" },
+            { number: 255, text: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ" },
+            { number: 286, text: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا" }
+        ],
+        36: [
+            { number: 1, text: "يس" },
+            { number: 2, text: "وَالْقُرْآنِ الْحَكِيمِ" },
+            { number: 3, text: "إِنَّكَ لَمِنَ الْمُرْسَلِينَ" }
+        ],
+        55: [
+            { number: 1, text: "الرَّحْمَٰنُ" },
+            { number: 13, text: "فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ" },
+            { number: 78, text: "تَبَارَكَ اسْمُ رَبِّكَ ذِي الْجَلَالِ وَالْإِكْرَامِ" }
+        ],
+        67: [
+            { number: 1, text: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ" },
+            { number: 2, text: "الَّذِي خَلَقَ الْمَوْتَ وَالْحَيَاةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا" }
+        ],
+        112: [
+            { number: 1, text: "قُلْ هُوَ اللَّهُ أَحَدٌ" },
+            { number: 2, text: "اللَّهُ الصَّمَدُ" },
+            { number: 3, text: "لَمْ يَلِدْ وَلَمْ يُولَدْ" },
+            { number: 4, text: "وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ" }
+        ]
+    };
+
+    /* ----------------------------------------
+       State Management
+       ---------------------------------------- */
+    const state = {
+        currentView: 'dashboard',
+        filteredSurahs: [...QURAN_DATA],
+        searchResults: [],
+        selectedSurah: null
+    };
+
+    /* ----------------------------------------
+       DOM References
+       ---------------------------------------- */
+    const dom = {
+        navBtns: document.querySelectorAll('.nav-btn'),
+        viewSections: document.querySelectorAll('.view-section'),
+        surahList: document.getElementById('surah-list'),
+        juzFilter: document.getElementById('juz-filter'),
+        typeFilter: document.getElementById('type-filter'),
+        surahSearch: document.getElementById('surah-search'),
+        ayahSearch: document.getElementById('ayah-search'),
+        searchBtn: document.getElementById('btn-ayah-search'),
+        searchResults: document.getElementById('search-results'),
+        exactMatch: document.getElementById('exact-match'),
+        caseSensitive: document.getElementById('case-sensitive'),
+        surahModal: document.getElementById('surah-modal'),
+        modalClose: document.getElementById('modal-close'),
+        modalTitle: document.getElementById('modal-surah-name'),
+        modalType: document.getElementById('modal-surah-type'),
+        surahMeta: document.getElementById('surah-meta'),
+        surahAyahs: document.getElementById('surah-ayahs'),
+        overviewCanvas: document.getElementById('overviewCanvas'),
+        topSurahsCanvas: document.getElementById('topSurahsCanvas'),
+        typeDistCanvas: document.getElementById('typeDistCanvas'),
+        juzDistCanvas: document.getElementById('juzDistCanvas'),
+        pageDistCanvas: document.getElementById('pageDistCanvas')
+    };
+
+    /* ----------------------------------------
+       Utility Functions
+       ---------------------------------------- */
+    function animateValue(element, start, end, duration, suffix = '') {
+        const range = end - start;
+        const startTime = performance.now();
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(start + range * eased);
+            element.textContent = current.toLocaleString('ar-SA') + suffix;
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        requestAnimationFrame(update);
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    /* ----------------------------------------
+       Statistics Calculations
+       ---------------------------------------- */
+    function calculateStats() {
+        const totalAyahs = QURAN_DATA.reduce((sum, s) => sum + s.ayahs, 0);
+        const maxPage = Math.max(...QURAN_DATA.map(s => s.page));
+        const longestSurah = QURAN_DATA.reduce((max, s) => s.ayahs > max.ayahs ? s : max);
+        const shortestSurah = QURAN_DATA.reduce((min, s) => s.ayahs < min.ayahs ? s : min);
+
+        return {
+            totalSurahs: QURAN_DATA.length,
+            totalAyahs: totalAyahs,
+            totalPages: maxPage,
+            totalJuz: 30,
+            longestSurah: longestSurah.name,
+            shortestSurah: shortestSurah.name
+        };
+    }
+
+    /* ----------------------------------------
+       Dashboard View
+       ---------------------------------------- */
+    function initDashboard() {
+        const stats = calculateStats();
+
+        animateValue(document.getElementById('val-total-surahs'), 0, stats.totalSurahs, 1200);
+        animateValue(document.getElementById('val-total-ayahs'), 0, stats.totalAyahs, 2000);
+        animateValue(document.getElementById('val-total-pages'), 0, stats.totalPages, 1500);
+        animateValue(document.getElementById('val-total-juz'), 0, stats.totalJuz, 800);
+
+        document.getElementById('val-longest-surah').textContent = stats.longestSurah;
+        document.getElementById('val-shortest-surah').textContent = stats.shortestSurah;
+
+        drawOverviewChart();
+    }
+
+    function drawOverviewChart() {
+        const canvas = dom.overviewCanvas;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        const containerWidth = canvas.parentElement.clientWidth - 48;
+        canvas.style.width = containerWidth + 'px';
+        canvas.style.height = '400px';
+        canvas.width = containerWidth * dpr;
+        canvas.height = 400 * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = containerWidth;
+        const height = 400;
+        const padding = { top: 40, right: 20, bottom: 60, left: 60 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+
+        const maxAyahs = Math.max(...QURAN_DATA.map(s => s.ayahs));
+        const barCount = QURAN_DATA.length;
+        const barWidth = Math.max(3, (chartWidth / barCount) - 1);
+        const gap = 1;
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Grid lines
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            const y = padding.top + (chartHeight / 5) * i;
+            ctx.beginPath();
+            ctx.moveTo(padding.left, y);
+            ctx.lineTo(width - padding.right, y);
+            ctx.stroke();
+
+            const val = Math.round(maxAyahs - (maxAyahs / 5) * i);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.font = '11px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(val.toString(), padding.left - 8, y + 4);
+        }
+
+        // Bars
+        QURAN_DATA.forEach((surah, idx) => {
+            const x = padding.left + (idx / barCount) * chartWidth;
+            const barHeight = (surah.ayahs / maxAyahs) * chartHeight;
+            const y = padding.top + chartHeight - barHeight;
+
+            const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
+            gradient.addColorStop(0, surah.type === 'meccan' ? 'rgba(212,168,67,0.8)' : 'rgba(59,130,246,0.8)');
+            gradient.addColorStop(1, surah.type === 'meccan' ? 'rgba(212,168,67,0.2)' : 'rgba(59,130,246,0.2)');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, y, barWidth, barHeight);
+        });
+
+        // X-axis labels (every 10 surahs)
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.font = '10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        for (let i = 0; i < barCount; i += 10) {
+            const x = padding.left + (i / barCount) * chartWidth + barWidth / 2;
+            ctx.fillText(QURAN_DATA[i].number.toString(), x, height - padding.bottom + 20);
+        }
+
+        // Legend
+        ctx.font = '12px Tajawal, sans-serif';
+        ctx.fillStyle = 'rgba(212,168,67,0.8)';
+        ctx.fillRect(width - 180, 12, 14, 14);
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.textAlign = 'right';
+        ctx.fillText('مكية', width - 185, 23);
+
+        ctx.fillStyle = 'rgba(59,130,246,0.8)';
+        ctx.fillRect(width - 100, 12, 14, 14);
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillText('مدنية', width - 105, 23);
+    }
+
+    /* ----------------------------------------
+       Surahs View
+       ---------------------------------------- */
+    function populateJuzFilter() {
+        for (let i = 1; i <= 30; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = 'الجزء ' + i;
+            dom.juzFilter.appendChild(option);
+        }
+    }
+
+    function filterSurahs() {
+        const juzValue = dom.juzFilter.value;
+        const typeValue = dom.typeFilter.value;
+        const searchValue = dom.surahSearch.value.trim().toLowerCase();
+
+        state.filteredSurahs = QURAN_DATA.filter(surah => {
+            const juzMatch = juzValue === 'all' || surah.juz === parseInt(juzValue);
+            const typeMatch = typeValue === 'all' || surah.type === typeValue;
+            const searchMatch = !searchValue ||
+                surah.name.includes(searchValue) ||
+                surah.englishName.toLowerCase().includes(searchValue) ||
+                surah.number.toString() === searchValue;
+            return juzMatch && typeMatch && searchMatch;
+        });
+
+        renderSurahList();
+    }
+
+    function renderSurahList() {
+        dom.surahList.innerHTML = '';
+
+        if (state.filteredSurahs.length === 0) {
+            dom.surahList.innerHTML = '<div class="result-empty">لا توجد سور مطابقة للبحث</div>';
+            return;
+        }
+
+        state.filteredSurahs.forEach(surah => {
+            const item = document.createElement('div');
+            item.className = 'surah-item frosted-glass';
+            item.setAttribute('data-surah', surah.number);
+            item.innerHTML = `
+                <div class="surah-number">${surah.number}</div>
+                <div class="surah-details">
+                    <div class="surah-name">${surah.name}</div>
+                    <div class="surah-english-name">${surah.englishName} — ${surah.ayahs} آيات</div>
+                    <div class="surah-meta-badges">
+                        <span class="badge ${surah.type === 'meccan' ? 'badge-meccan' : 'badge-medinan'}">${surah.type === 'meccan' ? 'مكية' : 'مدنية'}</span>
+                        <span class="badge badge-juz">ج${surah.juz}</span>
+                        <span class="badge badge-juz">ص${surah.page}</span>
+                    </div>
+                </div>
+            `;
+            item.addEventListener('click', () => openSurahModal(surah));
+            dom.surahList.appendChild(item);
+        });
+    }
+
+    /* ----------------------------------------
+       Search View
+       ---------------------------------------- */
+    function searchAyahs() {
+        const query = dom.ayahSearch.value.trim();
+        const exact = dom.exactMatch.checked;
+        const caseSensitive = dom.caseSensitive.checked;
+
+        if (!query) {
+            dom.searchResults.innerHTML = '<div class="result-empty">اكتب كلمة للبحث في الآيات</div>';
+            return;
+        }
+
+        state.searchResults = [];
+
+        QURAN_DATA.forEach(surah => {
+            const ayahsData = AYAH_TEXTS[surah.number];
+            if (ayahsData) {
+                ayahsData.forEach(ayah => {
+                    let text = ayah.text;
+                    let searchTerm = query;
+                    let searchText = text;
+
+                    if (!caseSensitive) {
+                        searchText = text.toLowerCase();
+                        searchTerm = query.toLowerCase();
+                    }
+
+                    const match = exact ?
+                        searchText === searchTerm :
+                        searchText.includes(searchTerm);
+
+                    if (match) {
+                        let highlightedText;
+                        if (exact) {
+                            highlightedText = text;
+                        } else {
+                            const regex = new RegExp(`(${query})`, caseSensitive ? 'g' : 'gi');
+                            highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
+                        }
+
+                        state.searchResults.push({
+                            surahName: surah.name,
+                            surahNumber: surah.number,
+                            ayahNumber: ayah.number,
+                            ayahText: highlightedText
+                        });
+                    }
+                });
+            }
+        });
+
+        renderSearchResults();
+    }
+
+    function renderSearchResults() {
+        if (state.searchResults.length === 0) {
+            dom.searchResults.innerHTML = '<div class="result-empty">لم يتم العثور على نتائج</div>';
+            return;
+        }
+
+        dom.searchResults.innerHTML = '';
+
+        state.searchResults.forEach(result => {
+            const item = document.createElement('div');
+            item.className = 'search-result-item frosted-glass';
+            item.innerHTML = `
+                <div class="result-header">
+                    <span class="result-surah">سورة ${result.surahName} (${result.surahNumber})</span>
+                    <span class="result-ayah-num">آية ${result.ayahNumber}</span>
+                </div>
+                <div class="result-text">${result.ayahText}</div>
+            `;
+            dom.searchResults.appendChild(item);
+        });
+    }
+
+    /* ----------------------------------------
+       Charts View
+       ---------------------------------------- */
+    function initCharts() {
+        drawTopSurahsChart();
+        drawTypeDistChart();
+        drawJuzDistChart();
+        drawPageDistChart();
+    }
+
+    function drawTopSurahsChart() {
+        const canvas = dom.topSurahsCanvas;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        const parentWidth = canvas.parentElement.clientWidth - 48;
+        canvas.style.width = parentWidth + 'px';
+        canvas.style.height = '350px';
+        canvas.width = parentWidth * dpr;
+        canvas.height = 350 * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = parentWidth;
+        const height = 350;
+        const padding = { top: 20, right: 20, bottom: 100, left: 120 };
+
+        const sorted = [...QURAN_DATA].sort((a, b) => b.ayahs - a.ayahs).slice(0, 10);
+        const maxVal = sorted[0].ayahs;
+        const barHeight = 24;
+        const gap = 8;
+        const chartHeight = sorted.length * (barHeight + gap);
+
+        ctx.clearRect(0, 0, width, height);
+
+        sorted.forEach((surah, idx) => {
+            const y = padding.top + idx * (barHeight + gap);
+            const barWidth = (surah.ayahs / maxVal) * (width - padding.left - padding.right);
+
+            const gradient = ctx.createLinearGradient(padding.left, y, padding.left + barWidth, y);
+            gradient.addColorStop(0, 'rgba(212,168,67,0.9)');
+            gradient.addColorStop(1, 'rgba(212,168,67,0.3)');
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(padding.left, y, barWidth, barHeight, 4);
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.font = '13px Tajawal, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(surah.name, padding.left - 10, y + barHeight - 6);
+
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = '11px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(surah.ayahs + ' آيات', padding.left + barWidth + 8, y + barHeight - 7);
+        });
+    }
+
+    function drawTypeDistChart() {
+        const canvas = dom.typeDistCanvas;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        const parentWidth = canvas.parentElement.clientWidth - 48;
+        canvas.style.width = parentWidth + 'px';
+        canvas.style.height = '300px';
+        canvas.width = parentWidth * dpr;
+        canvas.height = 300 * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = parentWidth;
+        const height = 300;
+        const centerX = width / 2;
+        const centerY = height / 2 + 10;
+        const radius = Math.min(centerX, centerY) - 30;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const meccanCount = QURAN_DATA.filter(s => s.type === 'meccan').length;
+        const medinanCount = QURAN_DATA.filter(s => s.type === 'medinan').length;
+        const total = meccanCount + medinanCount;
+
+        const data = [
+            { label: 'مكية', count: meccanCount, color: 'rgba(212,168,67,0.8)' },
+            { label: 'مدنية', count: medinanCount, color: 'rgba(59,130,246,0.8)' }
+        ];
+
+        let startAngle = -Math.PI / 2;
+        data.forEach((item, idx) => {
+            const sliceAngle = (item.count / total) * 2 * Math.PI;
+            const endAngle = startAngle + sliceAngle;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fillStyle = item.color;
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(10,14,26,0.8)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Label
+            const midAngle = startAngle + sliceAngle / 2;
+            const labelX = centerX + Math.cos(midAngle) * (radius * 0.65);
+            const labelY = centerY + Math.sin(midAngle) * (radius * 0.65);
+
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Tajawal, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(item.count.toString(), labelX, labelY - 10);
+
+            ctx.font = '12px Tajawal, sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.fillText(item.label, labelX, labelY + 12);
+
+            startAngle = endAngle;
+        });
+
+        // Center circle (donut)
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.45, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(10,14,26,0.9)';
+        ctx.fill();
+
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.font = '12px Tajawal, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('إجمالي السور', centerX, centerY - 8);
+        ctx.fillStyle = 'rgba(212,168,67,0.9)';
+        ctx.font = 'bold 22px Inter, sans-serif';
+        ctx.fillText(total.toString(), centerX, centerY + 18);
+    }
+
+    function drawJuzDistChart() {
+        const canvas = dom.juzDistCanvas;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        const parentWidth = canvas.parentElement.clientWidth - 48;
+        canvas.style.width = parentWidth + 'px';
+        canvas.style.height = '350px';
+        canvas.width = parentWidth * dpr;
+        canvas.height = 350 * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = parentWidth;
+        const height = 350;
+        const padding = { top: 30, right: 20, bottom: 50, left: 50 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+
+        // Calculate ayahs per juz
+        const juzAyahs = [];
+        for (let j = 1; j <= 30; j++) {
+            let count = 0;
+            QURAN_DATA.forEach(surah => {
+                if (surah.juz === j) {
+                    count += surah.ayahs;
+                }
+            });
+            juzAyahs.push({ juz: j, ayahs: count });
+        }
+
+        const maxAyahs = Math.max(...juzAyahs.map(j => j.ayahs));
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Grid
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+            const y = padding.top + (chartHeight / 4) * i;
+            ctx.beginPath();
+            ctx.moveTo(padding.left, y);
+            ctx.lineTo(width - padding.right, y);
+            ctx.stroke();
+
+            const val = Math.round(maxAyahs - (maxAyahs / 4) * i);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(val.toString(), padding.left - 8, y + 4);
+        }
+
+        const barWidth = (chartWidth / 30) - 2;
+
+        juzAyahs.forEach((item, idx) => {
+            const x = padding.left + (idx / 30) * chartWidth;
+            const barHeight = (item.ayahs / maxAyahs) * chartHeight;
+            const y = padding.top + chartHeight - barHeight;
+
+            const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
+            gradient.addColorStop(0, 'rgba(168,85,247,0.8)');
+            gradient.addColorStop(1, 'rgba(168,85,247,0.2)');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, y, barWidth, barHeight);
+        });
+
+        // X labels
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.font = '9px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        juzAyahs.forEach((item, idx) => {
+            if (idx % 5 === 0 || idx === 29) {
+                const x = padding.left + (idx / 30) * chartWidth + barWidth / 2;
+                ctx.fillText(item.juz.toString(), x, height - padding.bottom + 18);
+            }
+        });
+    }
+
+    function drawPageDistChart() {
+        const canvas = dom.pageDistCanvas;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        const parentWidth = canvas.parentElement.clientWidth - 48;
+        canvas.style.width = parentWidth + 'px';
+        canvas.style.height = '350px';
+        canvas.width = parentWidth * dpr;
+        canvas.height = 350 * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = parentWidth;
+        const height = 350;
+        const padding = { top: 30, right: 20, bottom: 50, left: 50 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+
+        // Calculate surahs per page range (every 60 pages)
+        const pageRanges = [];
+        const rangeSize = 60;
+        const maxPage = Math.max(...QURAN_DATA.map(s => s.page));
+
+        for (let start = 1; start <= maxPage; start += rangeSize) {
+            const end = Math.min(start + rangeSize - 1, maxPage);
+            const count = QURAN_DATA.filter(s => s.page >= start && s.page <= end).length;
+            pageRanges.push({ label: `${start}-${end}`, start, end, count });
+        }
+
+        const maxCount = Math.max(...pageRanges.map(r => r.count));
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Grid
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+            const y = padding.top + (chartHeight / 4) * i;
+            ctx.beginPath();
+            ctx.moveTo(padding.left, y);
+            ctx.lineTo(width - padding.right, y);
+            ctx.stroke();
+
+            const val = Math.round(maxCount - (maxCount / 4) * i);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(val.toString(), padding.left - 8, y + 4);
+        }
+
+        const barWidth = (chartWidth / pageRanges.length) - 6;
+
+        pageRanges.forEach((range, idx) => {
+            const x = padding.left + (idx / pageRanges.length) * chartWidth + 3;
+            const barHeight = (range.count / maxCount) * chartHeight;
+            const y = padding.top + chartHeight - barHeight;
+
+            const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
+            gradient.addColorStop(0, 'rgba(34,197,94,0.8)');
+            gradient.addColorStop(1, 'rgba(34,197,94,0.2)');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, y, barWidth, barHeight);
+
+            // Label
+            ctx.fillStyle = 'rgba(255,255,255,0.4)';
+            ctx.font = '9px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(range.label, x + barWidth / 2, height - padding.bottom + 16);
+        });
+    }
+
+    /* ----------------------------------------
+       Modal Logic
+       ---------------------------------------- */
+    function openSurahModal(surah) {
+        state.selectedSurah = surah;
+
+        dom.modalTitle.textContent = `${surah.name} (${surah.englishName})`;
+        dom.modalType.textContent = surah.type === 'meccan' ? 'مكية' : 'مدنية';
+        dom.modalType.className = 'modal-badge ' + (surah.type === 'meccan' ? 'badge-meccan' : 'badge-medinan');
+
+        dom.surahMeta.innerHTML = `
+            <div class="meta-item">
+                <span class="meta-label">رقم السورة</span>
+                <span class="meta-value">${surah.number}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">عدد الآيات</span>
+                <span class="meta-value">${surah.ayahs}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">الجزء</span>
+                <span class="meta-value">${surah.juz}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">الصفحة</span>
+                <span class="meta-value">${surah.page}</span>
+            </div>
+        `;
+
+        const ayahsData = AYAH_TEXTS[surah.number];
+        dom.surahAyahs.innerHTML = '';
+
+        if (ayahsData && ayahsData.length > 0) {
+            ayahsData.forEach(ayah => {
+                const ayahEl = document.createElement('div');
+                ayahEl.className = 'ayah-item';
+                ayahEl.innerHTML = `
+                    <div class="ayah-header">
+                        <span class="ayah-number">آية ${ayah.number}</span>
+                    </div>
+                    <div class="ayah-text">${ayah.text}</div>
+                `;
+                dom.surahAyahs.appendChild(ayahEl);
+            });
+
+            if (surah.ayahs > ayahsData.length) {
+                const note = document.createElement('div');
+                note.className = 'result-empty mt-4';
+                note.textContent = `عرض ${ayahsData.length} آيات نموذجية من أصل ${surah.ayahs}`;
+                dom.surahAyahs.appendChild(note);
+            }
+        } else {
+            dom.surahAyahs.innerHTML = '<div class="result-empty">لا توجد بيانات للآيات متاحة حالياً</div>';
+        }
+
+        dom.surahModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        dom.surahModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    /* ----------------------------------------
+       Navigation
+       ---------------------------------------- */
+    function switchView(viewName) {
+        state.currentView = viewName;
+
+        dom.navBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.view === viewName);
+        });
+
+        dom.viewSections.forEach(section => {
+            section.classList.toggle('active', section.id === 'view-' + viewName);
+        });
+
+        // Initialize view-specific content
+        if (viewName === 'dashboard') {
+            setTimeout(() => drawOverviewChart(), 100);
+        } else if (viewName === 'charts') {
+            setTimeout(() => initCharts(), 100);
+        }
+    }
+
+    /* ----------------------------------------
+       Event Listeners
+       ---------------------------------------- */
+    function initEventListeners() {
+        // Navigation
+        dom.navBtns.forEach(btn => {
+            btn.addEventListener('click', () => switchView(btn.dataset.view));
+        });
+
+        // Filters
+        dom.juzFilter.addEventListener('change', filterSurahs);
+        dom.typeFilter.addEventListener('change', filterSurahs);
+        dom.surahSearch.addEventListener('input', debounce(filterSurahs, 300));
+
+        // Search
+        dom.searchBtn.addEventListener('click', searchAyahs);
+        dom.ayahSearch.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') searchAyahs();
+        });
+
+        // Modal
+        dom.modalClose.addEventListener('click', closeModal);
+        dom.surahModal.addEventListener('click', (e) => {
+            if (e.target === dom.surahModal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (state.currentView === 'dashboard') drawOverviewChart();
+                if (state.currentView === 'charts') initCharts();
+            }, 250);
+        });
+    }
+
+    /* ----------------------------------------
+       Initialize Application
+       ---------------------------------------- */
+    function init() {
+        populateJuzFilter();
+        renderSurahList();
+        initDashboard();
+        initEventListeners();
+
+        // Pre-render chart canvases
+        setTimeout(() => {
+            if (state.currentView === 'dashboard') drawOverviewChart();
+        }, 200);
+    }
+
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+
+
+              </script>
+                        </body>
+                        </html>
+                    
