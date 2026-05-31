@@ -2,526 +2,437 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quran Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F2F2F7">
+    <title>Quran Explorer | iOS 17</title>
     <style>
         :root {
-            --bg-color: #f2f2f7;
-            --text-primary: #000000;
-            --text-secondary: #8e8e93;
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --accent-color: #007aff;
-            --separator-color: rgba(0, 0, 0, 0.1);
-            --item-bg: rgba(255, 255, 255, 0.8);
-            --item-hover: rgba(255, 255, 255, 0.95);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Tajawal", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --ios-bg: #F2F2F7;
+            --ios-card: #FFFFFF;
+            --ios-text: #000000;
+            --ios-text-sec: #8E8E93;
+            --ios-blue: #007AFF;
+            --ios-separator: #C6C6C8;
+            --ios-nav-bg: rgba(255, 255, 255, 0.85);
+            --ios-search-bg: rgba(118, 118, 128, 0.12);
+            --ios-toggle-bg: #E9E9EA;
+            --ios-toggle-knob: #FFFFFF;
+            --ios-btn-bg: #E5E5EA;
+            --ios-btn-text: #000000;
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Tajawal", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-sm: 8px;
+            --shadow-ios: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #000000;
-                --text-primary: #ffffff;
-                --text-secondary: #98989d;
-                --glass-bg: rgba(28, 28, 30, 0.75);
-                --glass-border: rgba(255, 255, 255, 0.15);
-                --accent-color: #0a84ff;
-                --separator-color: rgba(255, 255, 255, 0.15);
-                --item-bg: rgba(28, 28, 30, 0.8);
-                --item-hover: rgba(44, 44, 46, 0.95);
-                --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            }
+        [data-theme="dark"] {
+            --ios-bg: #000000;
+            --ios-card: #1C1C1E;
+            --ios-text: #FFFFFF;
+            --ios-text-sec: #98989D;
+            --ios-blue: #0A84FF;
+            --ios-separator: #38383A;
+            --ios-nav-bg: rgba(28, 28, 30, 0.85);
+            --ios-search-bg: rgba(118, 118, 128, 0.24);
+            --ios-toggle-bg: #39393D;
+            --ios-toggle-knob: #FFFFFF;
+            --ios-btn-bg: #2C2C2E;
+            --ios-btn-text: #FFFFFF;
+            --shadow-ios: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        
-        html, body {
-            height: 100%;
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            transition: background-color 0.3s, color 0.3s;
-            overflow-x: hidden;
-        }
+        html { font-family: var(--font-stack); background: var(--ios-bg); color: var(--ios-text); transition: background 0.3s ease, color 0.3s ease; }
+        body { min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
 
-        /* Frosted Glass Mixin */
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow);
-        }
-
-        /* Layout */
-        .app-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100vh;
-        }
-
-        header {
+        /* iOS Navigation Bar */
+        .ios-navbar {
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 16px 24px;
-            border-radius: 20px;
-            margin-bottom: 10px;
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--accent-color), #5ac8fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 4px;
-        }
-
-        .search-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 14px;
-            border: none;
-            background: rgba(120, 120, 128, 0.12);
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: background 0.2s;
-        }
-
-        input[type="text"]:focus {
-            background: rgba(120, 120, 128, 0.25);
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 20px;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* Sidebar - Surah List */
-        .sidebar {
-            border-radius: 20px;
-            padding: 12px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .surah-item {
-            padding: 14px 16px;
-            border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            transition: var(--transition);
-            background: var(--item-bg);
-            border: 1px solid transparent;
+            justify-content: space-between;
+            padding: 12px 16px;
+            padding-top: max(12px, env(safe-area-inset-top));
+            background: var(--ios-nav-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid var(--ios-separator);
+            transition: background 0.3s, border-color 0.3s;
         }
 
-        .surah-item:hover {
-            background: var(--item-hover);
-            transform: translateX(-4px);
-        }
-
-        .surah-item.active {
-            border-color: var(--accent-color);
-            background: rgba(0, 122, 255, 0.15);
-        }
-
-        .surah-info h3 {
+        .ios-navbar-title {
             font-size: 17px;
             font-weight: 600;
-            margin-bottom: 2px;
+            text-align: center;
+            flex: 1;
         }
 
-        .surah-info span {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .badge {
-            font-size: 11px;
-            padding: 4px 8px;
+        /* iOS Segmented Control */
+        .ios-segmented {
+            display: flex;
+            background: var(--ios-btn-bg);
+            padding: 3px;
             border-radius: 10px;
-            background: rgba(120, 120, 128, 0.15);
-            color: var(--text-secondary);
+            margin: 12px 16px;
+            position: relative;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .ios-segment {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: var(--ios-text-sec);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+            z-index: 2;
+        }
+        .ios-segment.active {
+            color: var(--ios-text);
+            background: var(--ios-card);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .ios-segment:active { transform: scale(0.95); }
+
+        /* iOS Grouped List */
+        .ios-group {
+            margin: 8px 16px;
+            background: var(--ios-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-ios);
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        .ios-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 0.5px solid var(--ios-separator);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .ios-item:last-child { border-bottom: none; }
+        .ios-item:active { background: var(--ios-btn-bg); }
+        .ios-item h3 { font-size: 17px; font-weight: 400; margin-bottom: 2px; }
+        .ios-item span { font-size: 13px; color: var(--ios-text-sec); }
+        .ios-badge {
+            background: var(--ios-btn-bg);
+            color: var(--ios-text-sec);
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
             font-weight: 500;
         }
 
-        /* Content Area - Ayah Display */
-        .content-area {
-            border-radius: 20px;
-            padding: 24px;
-            overflow-y: auto;
-            position: relative;
+        /* iOS Search Bar */
+        .ios-search {
+            width: 100%;
+            padding: 10px 14px;
+            margin: 8px 16px;
+            border: none;
+            background: var(--ios-search-bg);
+            border-radius: var(--radius-md);
+            color: var(--ios-text);
+            font-size: 16px;
+            font-family: inherit;
+            transition: background 0.3s, box-shadow 0.2s;
         }
+        .ios-search:focus { box-shadow: 0 0 0 2px var(--ios-blue); }
+        .ios-search::placeholder { color: var(--ios-text-sec); }
 
-        .empty-state, .loading-state, .error-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--separator-color);
-            border-top-color: var(--accent-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 16px;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .surah-header {
-            text-align: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--separator-color);
-        }
-
-        .surah-header h2 {
-            font-size: 26px;
-            font-weight: 800;
-            margin-bottom: 6px;
-            color: var(--accent-color);
-        }
-
-        .surah-header p {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .ayah-card {
-            padding: 18px;
-            margin-bottom: 16px;
-            background: var(--item-bg);
-            border-radius: 16px;
-            transition: var(--transition);
-            animation: fadeUp 0.4s ease backwards;
-            border: 1px solid transparent;
-        }
-
-        .ayah-card:hover {
-            background: var(--item-hover);
-            border-color: var(--glass-border);
-            transform: translateY(-2px);
-        }
-
-        .ayah-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .ayah-num {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent-color);
-            background: rgba(0, 122, 255, 0.1);
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-
-        .ayah-text {
-            font-size: 20px;
-            line-height: 2.2;
-            text-align: justify;
-            font-family: "Amiri", "Tajawal", serif;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        .ayah-text mark {
-            background: rgba(255, 204, 0, 0.3);
-            color: inherit;
-            padding: 0 2px;
-            border-radius: 4px;
-        }
-
-        .translation-text {
-            font-size: 15px;
-            color: var(--text-secondary);
-            font-style: italic;
-            line-height: 1.5;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Footer */
-        footer {
-            margin-top: 16px;
-            padding: 14px 24px;
-            border-radius: 18px;
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .social-link {
+        /* iOS Toggle Switch */
+        .ios-switch-label {
             display: flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
+            font-size: 13px;
+            color: var(--ios-text-sec);
+            cursor: pointer;
+        }
+        .ios-switch-input { display: none; }
+        .ios-switch {
+            position: relative;
+            width: 51px;
+            height: 31px;
+            background: var(--ios-toggle-bg);
+            border-radius: 31px;
+            transition: background 0.3s;
+        }
+        .ios-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 27px;
+            height: 27px;
+            background: var(--ios-toggle-knob);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .ios-switch-input:checked + .ios-switch { background: var(--ios-blue); }
+        .ios-switch-input:checked + .ios-switch::after { transform: translateX(-20px); }
+
+        /* iOS Buttons */
+        .ios-btn {
+            border: none;
+            background: var(--ios-blue);
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            width: 100%;
+            margin-top: 12px;
+        }
+        .ios-btn:active { opacity: 0.8; transform: scale(0.98); }
+        .ios-btn-outline {
+            background: transparent;
+            border: 1px solid var(--ios-blue);
+            color: var(--ios-blue);
         }
 
-        .social-link:hover { color: var(--accent-color); }
-        .social-link svg { width: 18px; height: 18px; fill: currentColor; }
+        /* Content Views */
+        .ios-views { position: relative; min-height: 60vh; }
+        .ios-view {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+        .ios-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Reader & Ayah Styling */
+        .reader-header {
+            text-align: center;
+            padding: 24px 16px;
+            border-bottom: 1px solid var(--ios-separator);
+        }
+        .reader-header h2 { font-size: 28px; font-weight: 700; margin-bottom: 4px; color: var(--ios-blue); }
+        .reader-header p { font-size: 15px; color: var(--ios-text-sec); }
+        
+        .ayah-cell {
+            padding: 18px 16px;
+            border-bottom: 0.5px solid var(--ios-separator);
+            transition: background 0.2s;
+        }
+        .ayah-cell:last-child { border-bottom: none; }
+        .ayah-cell:active { background: var(--ios-btn-bg); }
+        .ayah-num { font-size: 13px; font-weight: 600; color: var(--ios-blue); margin-bottom: 6px; }
+        .ayah-text { font-size: 20px; line-height: 2.1; text-align: justify; margin-bottom: 4px; font-family: "Amiri", "Tajawal", serif; }
+        .ayah-trans { font-size: 15px; color: var(--ios-text-sec); font-style: italic; }
+        mark { background: rgba(255, 204, 0, 0.35); padding: 0 4px; border-radius: 4px; }
+
+        .placeholder { text-align: center; padding: 40px 20px; color: var(--ios-text-sec); font-size: 16px; }
+
+        /* Utilities */
+        .loading { display: flex; justify-content: center; padding: 30px; }
+        .spinner { width: 24px; height: 24px; border: 2px solid var(--ios-separator); border-top-color: var(--ios-blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Responsive */
-        @media (max-width: 850px) {
-            .main-content { grid-template-columns: 1fr; }
-            .sidebar { display: none; } /* Mobile: Maybe add a dropdown later, for now hiding sidebar */
-            .sidebar.mobile-visible { display: flex; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 200; }
-            .content-area { margin-bottom: 60px; }
-            footer { display: none; }
-            h1 { font-size: 22px; }
+        @media (min-width: 768px) {
+            .ios-navbar, .ios-segmented, .ios-group, .ios-search { max-width: 600px; margin-left: auto; margin-right: auto; }
+            .ios-segmented { margin-top: 16px; }
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <header class="glass">
-        <h1>مستكشف القرآن الكريم</h1>
-        <div class="search-wrapper">
-            <input type="text" id="search-input" placeholder="بحث في الآيات (مثال: الصبر، الرحمة)...">
-        </div>
-    </header>
+    <nav class="ios-navbar">
+        <button class="ios-btn ios-btn-outline" style="width:auto; margin:0; padding:6px 12px; font-size:14px;" onclick="window.location.reload()">تحديث</button>
+        <h1 class="ios-navbar-title">القرآن الكريم</h1>
+        <label class="ios-switch-label">
+            <input type="checkbox" id="theme-toggle" class="ios-switch-input">
+            <span class="ios-switch"></span>
+        </label>
+    </nav>
 
-    <div class="main-content">
-        <aside class="sidebar glass" id="sidebar">
-            <!-- Surah items will be injected here -->
-        </aside>
-
-        <section class="content-area glass" id="content-area">
-            <div class="loading-state" id="loader">
-                <div class="spinner"></div>
-                <p>جاري تحميل البيانات...</p>
-            </div>
-            <div id="ayah-container"></div>
-        </section>
+    <div class="ios-segmented">
+        <button class="ios-segment active" data-view="surahs">السور</button>
+        <button class="ios-segment" data-view="reader">العارض</button>
+        <button class="ios-segment" data-view="search">بحث</button>
     </div>
 
-    <footer class="glass">
-        <a href="https://instagram.com/ne_7u" target="_blank" class="social-link">
-            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            <span>ne_7u</span>
-        </a>
-        <a href="https://t.me/WWGTR" target="_blank" class="social-link">
-            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            <span>WWGTR</span>
-        </a>
-    </footer>
-</div>
+    <main class="ios-views">
+        <section id="view-surahs" class="ios-view active">
+            <div id="surah-list" class="loading"><div class="spinner"></div></div>
+        </section>
 
-<script>
-    const App = {
-        data: {
-            surahs: [],
-            ayahs: [],
-            ayahsBySid: {}
-        },
-        state: {
-            currentSurahId: null,
-            searchQuery: ''
-        },
+        <section id="view-reader" class="ios-view">
+            <div id="reader-container" class="placeholder">اختر سورة من القائمة لعرض الآيات</div>
+        </section>
 
-        init() {
-            this.elements = {
-                sidebar: document.getElementById('sidebar'),
-                content: document.getElementById('content-area'),
-                loader: document.getElementById('loader'),
-                ayahContainer: document.getElementById('ayah-container'),
-                searchInput: document.getElementById('search-input')
-            };
+        <section id="view-search" class="ios-view">
+            <input type="search" class="ios-search" id="search-input" placeholder="بحث   ...">
+            <div id="search-list"></div>
+        </section>
+    </main>
 
-            this.loadQuranData();
-            this.setupListeners();
-        },
+    <script>
+        const App = {
+            data: { surahs: [], ayahs: [], map: {} },
+            state: { currentSurah: null, searchQuery: '', view: 'surahs' },
+            
+            init() {
+                this.setupTheme();
+                this.setupListeners();
+                this.loadQuranData();
+            },
 
-        async loadQuranData() {
-            try {
-                const response = await fetch('quran_data.json');
-                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-                const data = await response.json();
+            setupTheme() {
+                const toggle = document.getElementById('theme-toggle');
+                const savedTheme = localStorage.getItem('quran-theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                const isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+                if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+                toggle.checked = isDark;
 
-                // Map data from JSON
-                this.data.surahs = data.surahs || [];
-                this.data.ayahs = data.ayahs || [];
+                toggle.addEventListener('change', (e) => {
+                    const theme = e.target.checked ? 'dark' : 'light';
+                    document.documentElement.setAttribute('data-theme', theme);
+                    localStorage.setItem('quran-theme', theme);
+                });
+            },
 
-                // Organize ayahs by Surah ID (sid) for O(1) access
-                this.data.ayahsBySid = this.data.ayahs.reduce((acc, ayah) => {
-                    const sid = ayah.sid;
-                    if (!acc[sid]) acc[sid] = [];
-                    acc[sid].push(ayah);
-                    return acc;
-                }, {});
-
-                // Sort ayahs within each surah by 'anum' (ayah number)
-                Object.keys(this.data.ayahsBySid).forEach(sid => {
-                    this.data.ayahsBySid[sid].sort((a, b) => a.anum - b.anum);
+            setupListeners() {
+                document.querySelectorAll('.ios-segment').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.ios-segment').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const viewId = btn.dataset.view;
+                        document.querySelectorAll('.ios-view').forEach(v => v.classList.remove('active'));
+                        document.getElementById(`view-${viewId}`).classList.add('active');
+                        this.state.view = viewId;
+                    });
                 });
 
-                // Render UI
-                this.elements.loader.style.display = 'none';
-                this.renderSurahList();
-                
-                // Auto-select first surah
-                if (this.data.surahs.length > 0) {
-                    this.selectSurah(this.data.surahs[0].id);
+                const searchInput = document.getElementById('search-input');
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        this.state.searchQuery = e.target.value.trim();
+                        this.renderSearch();
+                    }, 250);
+                });
+            },
+
+            async loadQuranData() {
+                try {
+                    const res = await fetch('quran_data.json');
+                    if (!res.ok) throw new Error('فشل الاتصال بملف البيانات');
+                    const json = await res.json();
+
+                    this.data.surahs = Array.isArray(json.surahs) ? json.surahs : [];
+                    this.data.ayahs = Array.isArray(json.ayahs) ? json.ayahs : [];
+                    
+                    this.data.ayahs.forEach(a => {
+                        const sid = a.sid || a.surahId;
+                        if (!this.data.map[sid]) this.data.map[sid] = [];
+                        this.data.map[sid].push(a);
+                    });
+                    
+                    Object.keys(this.data.map).forEach(sid => {
+                        this.data.map[sid].sort((a, b) => (a.anum || a.number) - (b.anum || b.number));
+                    });
+
+                    this.renderSurahs();
+                } catch (err) {
+                    document.getElementById('surah-list').innerHTML = `<div class="placeholder" style="color:#FF3B30">⚠️ ${err.message}<br>تأكد من وجود ملف quran_data.json</div>`;
+                }
+            },
+
+            renderSurahs() {
+                const container = document.getElementById('surah-list');
+                container.innerHTML = '';
+                const group = document.createElement('div');
+                group.className = 'ios-group';
+
+                this.data.surahs.forEach(s => {
+                    const id = s.id || s.surah_number;
+                    const name = s.name || s.arabicName || 'سورة';
+                    const count = s.total_ayahs || s.ayahsCount || this.data.map[id]?.length || 0;
+                    const item = document.createElement('div');
+                    item.className = 'ios-item';
+                    item.innerHTML = `<div><h3>${name}</h3><span>${count} آية | الجزء ${s.juz || '-'}</span></div><span class="ios-badge">${id}</span>`;
+                    item.addEventListener('click', () => this.openSurah(id));
+                    group.appendChild(item);
+                });
+                container.appendChild(group);
+            },
+
+            openSurah(id) {
+                this.state.currentSurah = id;
+                const container = document.getElementById('reader-container');
+                const surah = this.data.surahs.find(s => (s.id || s.surah_number) == id) || {};
+                const ayahs = this.data.map[id] || [];
+
+                document.querySelectorAll('.ios-segment').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.ios-segment')[1].classList.add('active'); // Activate Reader
+                document.querySelectorAll('.ios-view').forEach(v => v.classList.remove('active'));
+                document.getElementById('view-reader').classList.add('active');
+
+                container.innerHTML = `
+                    <div class="ios-group">
+                        <div class="reader-header">
+                            <h2>${surah.name || 'سورة'}</h2>
+                            <p>${surah.englishName || ''} • ${ayahs.length} آيات • الجزء ${surah.juz || '-'}</p>
+                        </div>
+                    </div>
+                    <div class="ios-group">
+                        ${ayahs.map(a => `
+                            <div class="ayah-cell">
+                                <div class="ayah-num">آية ${a.anum || a.number}</div>
+                                <div class="ayah-text">${a.ar_text || a.text || '...'}</div>
+                                ${a.translation || a.text_en ? `<div class="ayah-trans">${a.translation || a.text_en}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            },
+
+            renderSearch() {
+                const container = document.getElementById('search-list');
+                const q = this.state.searchQuery;
+                container.innerHTML = '';
+                if (!q) return;
+
+                const results = this.data.ayahs.filter(a => (a.ar_text || a.text || '').includes(q));
+                if (results.length === 0) {
+                    container.innerHTML = '<div class="placeholder">لا توجد نتائج</div>';
+                    return;
                 }
 
-            } catch (error) {
-                this.elements.loader.style.display = 'none';
-                this.elements.content.innerHTML = `
-                    <div class="error-state">
-                        <p style="color: #ff3b30; font-weight: bold; font-size: 18px;">⚠️ خطأ في تحميل البيانات</p>
-                        <p style="margin-top: 8px;">${error.message}</p>
-                        <p style="font-size: 13px; margin-top: 12px;">تأكد من وجود ملف <code>quran_data.json</code> في نفس المجلد.</p>
-                    </div>
-                `;
+                const group = document.createElement('div');
+                group.className = 'ios-group';
+                results.slice(0, 20).forEach(a => {
+                    const surah = this.data.surahs.find(s => (s.id || s.surah_number) == (a.sid || a.surahId));
+                    const highlighted = (a.ar_text || a.text).replace(new RegExp(q, 'gi'), '<mark>$&</mark>');
+                    const item = document.createElement('div');
+                    item.className = 'ayah-cell';
+                    item.innerHTML = `
+                        <div class="ayah-num">${surah?.name || 'غير محدد'} • آية ${a.anum || a.number}</div>
+                        <div class="ayah-text">${highlighted}</div>
+                    `;
+                    item.addEventListener('click', () => this.openSurah(a.sid || a.surahId));
+                    group.appendChild(item);
+                });
+                container.appendChild(group);
             }
-        },
+        };
 
-        renderSurahList() {
-            this.elements.sidebar.innerHTML = '';
-            
-            // Sort surahs by ID or index to ensure order
-            const sortedSurahs = [...this.data.surahs].sort((a, b) => (a.id || a.surah_index) - (b.id || b.surah_index));
-
-            sortedSurahs.forEach(surah => {
-                const el = document.createElement('div');
-                el.className = 'surah-item';
-                el.dataset.id = surah.id;
-                el.innerHTML = `
-                    <div class="surah-info">
-                        <h3>${surah.name}</h3>
-                        <span>${surah.total_ayahs} آيات | ${surah.juz ? 'جزء ' + surah.juz : ''}</span>
-                    </div>
-                    <span class="badge">${surah.surah_index}</span>
-                `;
-                el.addEventListener('click', () => this.selectSurah(surah.id));
-                this.elements.sidebar.appendChild(el);
-            });
-        },
-
-        selectSurah(surahId) {
-            this.state.currentSurahId = surahId;
-            
-            // Highlight in sidebar
-            document.querySelectorAll('.surah-item').forEach(item => {
-                item.classList.toggle('active', parseInt(item.dataset.id) === surahId);
-            });
-
-            this.renderAyahs();
-        },
-
-        renderAyahs() {
-            const ayahs = this.data.ayahsBySid[this.state.currentSurahId] || [];
-            const surah = this.data.surahs.find(s => s.id === this.state.currentSurahId) || {};
-
-            // Clear container
-            this.elements.ayahContainer.innerHTML = '';
-
-            // Add Surah Header
-            const header = document.createElement('div');
-            header.className = 'surah-header';
-            header.innerHTML = `
-                <h2>سورة ${surah.name}</h2>
-                <p>${surah.englishName || ''} | ${surah.total_ayahs} آيات | الجزء ${surah.juz || '-'}</p>
-            `;
-            this.elements.ayahContainer.appendChild(header);
-
-            if (ayahs.length === 0) {
-                this.elements.ayahContainer.innerHTML += '<p class="text-center" style="margin-top:20px; color:var(--text-secondary)">لا توجد آيات متاحة لهذه السورة في قاعدة البيانات.</p>';
-                return;
-            }
-
-            // Filter by search query if present
-            const filteredAyahs = this.state.searchQuery 
-                ? ayahs.filter(a => (a.ar_text || '').includes(this.state.searchQuery))
-                : ayahs;
-
-            if (this.state.searchQuery && filteredAyahs.length === 0) {
-                this.elements.ayahContainer.innerHTML += '<p class="text-center" style="margin-top:20px;">لا توجد نتائج مطابقة للبحث.</p>';
-                return;
-            }
-
-            // Render Ayahs
-            filteredAyahs.forEach((ayah, index) => {
-                const el = document.createElement('div');
-                el.className = 'ayah-card';
-                el.style.animationDelay = `${index * 0.05}s`;
-
-                // Highlight matching text
-                let textHtml = ayah.ar_text || '';
-                if (this.state.searchQuery) {
-                    const regex = new RegExp(`(${this.state.searchQuery})`, 'gi');
-                    textHtml = textHtml.replace(regex, '<mark>$1</mark>');
-                }
-
-                el.innerHTML = `
-                    <div class="ayah-meta">
-                        <span class="ayah-num">آية ${ayah.anum}</span>
-                        <span class="badge">صفحة ${ayah.ayah_page_number || surah.surah_page_number || '?'}</span>
-                    </div>
-                    <div class="ayah-text">${textHtml}</div>
-                    ${ayah.text ? `<div class="translation-text">${ayah.text}</div>` : ''}
-                `;
-                this.elements.ayahContainer.appendChild(el);
-            });
-        },
-
-        setupListeners() {
-            let searchTimeout;
-            this.elements.searchInput.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    this.state.searchQuery = e.target.value.trim();
-                    this.renderAyahs();
-                }, 300); // Debounce search
-            });
-        }
-    };
-
-    // Initialize App when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => App.init());
-</script>
-
+        document.addEventListener('DOMContentLoaded', () => App.init());
+    </script>
 </body>
 </html>
 
